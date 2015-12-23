@@ -10208,8 +10208,8 @@ var attire = {
 
         var $navElement = $(
                 '<nav class="attireMainNav">' +
-                    '<ul></ul>' +
                     '<button class="toggleBtn iconMenu" type="button">Toggle navigation</button>' +
+                    '<ul></ul>' +
                 '</nav>'
             ),
             $navList = $navElement.find('ul');
