@@ -64,3 +64,17 @@
 	}
 
 }
+
+.attireFooter {
+
+    padding: 2em;
+    border-top: 1px solid $colorGrayLight1;
+
+    > p {
+
+        @include fontSansLight;
+        font-size: 1.5em;
+
+    }
+
+}

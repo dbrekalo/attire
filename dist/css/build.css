@@ -731,6 +731,18 @@ body {
   }
 }
 
+.attireFooter {
+  padding: 2em;
+  border-top: 1px solid #e3e3e3;
+}
+
+.attireFooter > p {
+  font-family: Lato, Arial, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.5em;
+}
+
 .attireMainNav {
   position: relative;
   margin-bottom: -1em;
