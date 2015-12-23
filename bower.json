@@ -1,0 +1,32 @@
+{
+  "name": "attire",
+  "version": "0.1.0",
+  "homepage": "https://github.com/dbrekalo/attire",
+  "authors": [
+    "Damir Brekalo <dbrekalo@gmail.com>"
+  ],
+  "description": "",
+  "keywords": [
+    "attire",
+    "github",
+    "pages",
+    "skin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4",
+    "bourbon": "~4.2.3",
+    "normalize-css": "~3.0.3",
+    "pelinkovac": "*",
+    "prism": "~1.3.0",
+    "preCode": "https://github.com/leeoniya/preCode.js.git",
+    "slug": "~0.9.1"
+  }
+}

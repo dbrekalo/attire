@@ -1,0 +1,16 @@
+@include normalizePlusReset();
+@include pageEmEquivalent(10);
+@include defineIconFont("attire", "icons/fonts/attireIcons", 'v1.0', $icons);
+
+html,
+body { min-height: 100%; background: #fff; }
+
+a { color: $colorMain1; }
+
+body {
+
+	@include fontSansNormal;
+	font-size: 1em; min-width: 32em; position: relative;
+	color: $colorGrayDark1;
+
+}

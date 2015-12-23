@@ -1,0 +1,71 @@
+.attireTitleType1 {
+
+	@include fontSansUltraBold;
+    font-size: 4em; padding: 0; margin: 0;
+
+    @include mediaMinWidth($breakpointMedium) {
+
+		font-size: 6em;
+
+    }
+
+}
+
+.attireTitleType2 {
+
+	@include fontSansUltraBold;
+    font-size: 3.8em; padding: 0; margin: 0 0 em(20,36);
+
+}
+
+.attireTitleType3 {
+
+	@include fontSansBold;
+    font-size: 2.2em; padding: 0; margin: 0 0 em(15,22);
+
+}
+
+.attireTextType1 {
+
+	@include fontSansLight;
+    font-size: 2.2em; padding: 0; margin: em(20,22) 0 em(20,22);
+    color: $colorGrayDark3; line-height: 1.4;
+
+    @include mediaMinWidth($breakpointMedium) {
+
+		font-size: 2.8em; margin: em(20,28) 0 em(30,28);
+
+    }
+
+}
+
+.attireTextType2 {
+
+    font-size: 1.8em; padding: 0; margin: 0 0 em(20,16);
+    color: $colorGrayDark2; line-height: 1.6;
+
+}
+
+.attireTextType3 {
+
+    font-size: 1.6em; padding: 0; margin: 0 0 em(20,16);
+    color: $colorGrayDark2; line-height: 1.6;
+
+}
+
+.attireListType1 {
+
+    > li {
+
+        font-size: 1.8em; padding-left: em(30,18); margin: em(10,18) 0; position: relative;
+        color: $colorGrayDark2; line-height: 1.6;
+
+        &:before {
+
+            content: "—"; position: absolute; left: 0; top: 0em;
+
+        }
+
+    }
+
+}
