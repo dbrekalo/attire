@@ -1018,6 +1018,20 @@ body {
   top: 0em;
 }
 
+.attireTextButtonType1 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: none;
+  color: #2B91F5;
+}
+
+.attireTextButtonType1::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
 .attireCodeHighlight[class*="language-"] {
   margin: 2em 0;
 }

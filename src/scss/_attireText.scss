@@ -69,3 +69,10 @@
     }
 
 }
+
+.attireTextButtonType1 {
+
+    @include normalizeButton;
+    color: $colorMain1;
+
+}

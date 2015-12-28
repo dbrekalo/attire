@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         watch: {
             jsFiles: {
                 expand: true,
-                files: ['src/js/**/*.js'],
+                files: ['src/js/**/*.js', 'Gruntfile.js'],
                 tasks: ['jshint', 'jscs', 'uglify', 'concat'],
                 options: {
                     spawn: false
