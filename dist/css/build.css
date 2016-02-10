@@ -986,6 +986,7 @@ body {
   font-size: 4em;
   padding: 0;
   margin: 0;
+  word-wrap: break-word;
 }
 
 @media screen and (min-width: 45.0625em) {
@@ -1001,6 +1002,7 @@ body {
   font-size: 3.8em;
   padding: 0;
   margin: 0 0 0.55556em;
+  word-wrap: break-word;
 }
 
 .attireTitleType3 {
@@ -1010,6 +1012,7 @@ body {
   font-size: 2.2em;
   padding: 0;
   margin: 0 0 0.68182em;
+  word-wrap: break-word;
 }
 
 .attireTextType1 {

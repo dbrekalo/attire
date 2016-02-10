@@ -2,6 +2,7 @@
 
 	@include fontSansUltraBold;
     font-size: 4em; padding: 0; margin: 0;
+    word-wrap: break-word;
 
     @include mediaMinWidth($breakpointMedium) {
 
@@ -15,6 +16,7 @@
 
 	@include fontSansUltraBold;
     font-size: 3.8em; padding: 0; margin: 0 0 em(20,36);
+    word-wrap: break-word;
 
 }
 
@@ -22,6 +24,7 @@
 
 	@include fontSansBold;
     font-size: 2.2em; padding: 0; margin: 0 0 em(15,22);
+    word-wrap: break-word;
 
 }
 
