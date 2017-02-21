@@ -1,7 +1,11 @@
-@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';
-@import '../../bower_components/pelinkovac/scss/all';
-@import '../../bower_components/normalize-css/normalize';
-@import '../../bower_components/prism/themes/prism';
+// Disable bourbon deprecation warnings
+$output-bourbon-deprecation-warnings: false;
+
+@import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
+@import 'node_modules/pelinkovac/scss/all';
+
+@import 'node_modules/normalize.css/normalize';
+@import 'node_modules/prismjs/themes/prism';
 
 @import 'variablesAndMixins';
 
@@ -11,3 +15,4 @@
 @import 'attireAuthor';
 @import 'attireText';
 @import 'attireCode';
+@import 'attireUserRepositories';

@@ -3,48 +3,6 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
-        uglify: {
-            min: {
-                files: {
-                    'dist/js/build.min.js': ['dist/js/build.js']
-                }
-            }
-        },
-
-        concat: {
-            standalone: {
-                src: [
-                    'bower_components/jquery/dist/jquery.js',
-                    'bower_components/preCode/preCode.js',
-                    'bower_components/prism/prism.js',
-                    'bower_components/slug/slug.js',
-
-                    'src/js/main.js'
-                ],
-                dest: 'dist/js/build.js'
-            }
-        },
-
-        jshint: {
-            options: {
-                'jshintrc': '.jshintrc'
-            },
-            all: ['src','Gruntfile.js']
-        },
-
-        jscs: {
-            options: {
-                config: '.jscsrc'
-            },
-            scripts: {
-                files: {
-                    src: [
-                        'src/**/*.js'
-                    ]
-                }
-            }
-        },
-
         sass: {
             expanded: {
                 files: {
@@ -53,7 +11,8 @@ module.exports = function(grunt) {
                 options: {
                     outputStyle: 'expanded',
                     sourceMap: false,
-                    precision: 5
+                    precision: 5,
+                    includePaths: ['node_modules']
                 }
             },
             minified: {
@@ -63,8 +22,25 @@ module.exports = function(grunt) {
                 options: {
                     outputStyle: 'compressed',
                     sourceMap: false,
-                    precision: 5
+                    precision: 5,
+                    includePaths: ['node_modules']
                 }
+            }
+        },
+
+        eslint: {
+            options: {
+                configFile: '.eslintrc.js'
+            },
+            target: ['src/js/**/*.js', 'Gruntfile.js']
+        },
+
+        bump: {
+            options: {
+                files: ['package.json', 'bower.json'],
+                commitFiles: ['package.json', 'bower.json'],
+                tagName: '%VERSION%',
+                push: false
             }
         },
 
@@ -72,7 +48,7 @@ module.exports = function(grunt) {
             jsFiles: {
                 expand: true,
                 files: ['src/js/**/*.js', 'Gruntfile.js'],
-                tasks: ['jshint', 'jscs', 'uglify', 'concat'],
+                tasks: ['eslint'],
                 options: {
                     spawn: false
                 }
@@ -92,6 +68,6 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['jshint',  'jscs', 'uglify', 'concat', 'sass']);
+    grunt.registerTask('build', ['eslint', 'sass']);
 
 };

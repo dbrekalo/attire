@@ -1,6 +1,7 @@
 {
   "name": "attire",
   "version": "1.0.4",
+  "description": "Theme and frontend setup for simple and responsive demo pages",
   "homepage": "https://github.com/dbrekalo/attire",
   "authors": [
     "Damir Brekalo <dbrekalo@gmail.com>"

@@ -1,19 +1,35 @@
 {
   "name": "attire",
+  "description": "Theme and frontend setup for simple and responsive demo pages.",
   "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/dbrekalo/attire"
   },
+  "scripts": {
+    "watch": "npm run build && grunt watch & webpack --env=development --watch --progress --colors",
+    "build": "grunt build && webpack --env=development --progress --colors && webpack --env=production --progress --colors",
+    "bump:patch": "grunt bump:patch",
+    "bump:minor": "grunt bump:minor",
+    "bump:major": "grunt bump:major"
+  },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-copy": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-sass": "^1",
-    "grunt-contrib-uglify": "^0.6.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-jscs": "^1.5.0",
-    "load-grunt-tasks": "^0.6.0"
+    "bourbon": "^4.3.2",
+    "grunt": "^1.0.1",
+    "grunt-bump": "^0.8.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-sass": "^2.0.0",
+    "jquery": "^1",
+    "jquery-simple-view": "^2.1.2",
+    "load-grunt-tasks": "^3.5.2",
+    "normalize.css": "^5.0.0",
+    "pelinkovac": "^0.1.2",
+    "prismjs": "^1.6.0",
+    "shuffle-array": "^1.0.1",
+    "slug": "^0.9.1",
+    "webpack": "^2.2.1",
+    "when-in-viewport": "^2.0.2"
   }
 }
