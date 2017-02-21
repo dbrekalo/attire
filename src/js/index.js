@@ -118,7 +118,7 @@ AttireUserRepositories = View.extend({
 
     initialize: function() {
 
-        this.options = this.$el.data();
+        this.options = $.extend({}, this.$el.data());
 
         this.$el.html('<p class="loader">Loading...</p>');
 
@@ -141,9 +141,19 @@ AttireUserRepositories = View.extend({
 
         $.get('https://api.github.com/users/' + options.user + '/repos', function(response) {
 
+            var currentRepoUrl = $('link[rel="canonical"]').attr('href');
+            var currentRepoName = currentRepoUrl ? $.map(currentRepoUrl.split('/'), function(part) {
+                return part ? part : undefined;
+            }).slice(-1)[0] : undefined;
+
             var repositories = $.map(response, function(repo) {
 
-                return repo.has_pages && repo.name !== options.excludeRepo ? {
+                var includeRepo =
+                    (options.onlyWithPages ? repo.has_pages : true) &&
+                    (options.excludeRepo ? options.excludeRepo.split(',').indexOf(repo.name) < 0 : true) &&
+                    (currentRepoName ? currentRepoName !== repo.name : true);
+
+                return includeRepo ? {
                     title: repo.name,
                     description: repo.description,
                     url: repo.homepage || repo.html_url
