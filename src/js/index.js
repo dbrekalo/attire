@@ -3,6 +3,7 @@ var View = require('jquery-simple-view');
 var slug = require('slug');
 var shuffleArray = require('shuffle-array');
 
+require('console-polyfill');
 require('when-in-viewport');
 
 var AttireController;
