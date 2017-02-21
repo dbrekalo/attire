@@ -13245,7 +13245,7 @@ module.exports = g;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = window.$ = __webpack_require__(0);
+var $ = window.$ = window.jQuery = __webpack_require__(0);
 var View = __webpack_require__(2);
 var slug = __webpack_require__(6);
 var shuffleArray = __webpack_require__(5);

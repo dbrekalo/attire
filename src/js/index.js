@@ -1,4 +1,4 @@
-var $ = window.$ = require('jquery');
+var $ = window.$ = window.jQuery = require('jquery');
 var View = require('jquery-simple-view');
 var slug = require('slug');
 var shuffleArray = require('shuffle-array');
