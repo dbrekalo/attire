@@ -72,7 +72,7 @@ AttireNavigation = View.extend({
 
     events: {
         'click > .toggleBtn': function(e) {
-            $(e.currentTarget).toggleClass('isActive');
+            this.$el.toggleClass('isActive');
         }
     },
 
