@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>{{ title }}</title>
+        {% if description %}
+        <meta name="description" content="{{ description }}">
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% if canonicalUrl %}
+        <link rel="canonical" href="{{ canonicalUrl }}" />
+        {% endif %}
+
+        {% if inlineCss %}
+            <style>
+                {{ cssFiles.join(' ')|safe }}
+            </style>
+        {% else %}
+            {% for cssFile in cssFiles %}
+            <link rel="stylesheet" href="{{ cssFile }}">
+            {% endfor %}
+        {% endif %}
+
+    </head>
+<body>
+
+<nav class="attireMainNav">
+    <button class="toggleBtn iconMenu" type="button">Toggle navigation</button>
+    <ul>
+        {% for navItem in navItems %}
+        <li><a href="{{ navItem.url }}">{{ navItem.caption }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
+
+{{ bodyHtml|safe }}
+
+{% if userRepositories %}
+<section class="attireUserRepositories" {{ 'data-only-with-pages="true"'|safe if userRepositories.onlyWithPages else '' }} data-user="{{ userRepositories.user }}"></section>
+{% endif %}
+
+{% if githubUrl %}
+<a class="githubRibbon" href="{{ githubUrl }}">
+    <img src="{{ assetDistPath }}images/githubRibbon.png" alt="Fork me on GitHub">
+</a>
+{% endif %}
+
+<footer class="attireFooter">
+    <p>This page is built with <a href="http://dbrekalo.github.io/attire/">Attire</a>.</p>
+</footer>
+
+{% for jsFile in jsFiles %}
+<script src="{{ jsFile }}"></script>
+{% endfor %}
+
+</body>
+
+</html>

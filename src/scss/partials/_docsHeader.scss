@@ -1,0 +1,41 @@
+.attireHeader {
+
+    position: fixed; left: 0; top: 0; right: 0; box-sizing: border-box;
+    border-bottom: 1px solid $colorGrayLight1;
+    background: #fff;
+
+    > .title {
+
+        @include fontSansNormal;
+        font-size: 2em; line-height: em($docsHeaderHeight,20); padding: 0 em(20,20);
+
+    }
+
+    > .attireSearch {
+
+        display: block; padding: 0 1em 1em;
+
+        &:before {
+
+            left: auto; font-size: 1.3em; right: em(10,13); top: em(16,13);
+            opacity: 0.5;
+
+        }
+
+        > input {
+
+            display: block; width: 100%; font-size: 1.6em; padding: em(7,16) em(10,16);
+            background: rgba(#000, 0.04); border: 0;
+
+        }
+
+    }
+
+    @include mediaMinWidth($breakpointMedium) {
+
+        right: auto; bottom: 0; width: em($docsSidebarWidth,10); padding: 2em;
+        border-bottom: 0; border-right: 1px solid $colorGrayLight1;
+
+    }
+
+}

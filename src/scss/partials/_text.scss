@@ -1,12 +1,18 @@
 .attireTitleType1 {
 
-	@include fontSansUltraBold;
+    @include fontSansUltraBold;
     font-size: 4em; padding: 0; margin: 0;
     word-wrap: break-word;
 
     @include mediaMinWidth($breakpointMedium) {
 
-		font-size: 6em;
+        font-size: 6em;
+
+    }
+
+    & + .attireTextType2 {
+
+        margin-top: em(25,16);
 
     }
 
@@ -14,7 +20,7 @@
 
 .attireTitleType2 {
 
-	@include fontSansUltraBold;
+    @include fontSansUltraBold;
     font-size: 3.8em; padding: 0; margin: 0 0 em(20,36);
     word-wrap: break-word;
 
@@ -22,7 +28,7 @@
 
 .attireTitleType3 {
 
-	@include fontSansBold;
+    @include fontSansBold;
     font-size: 2.2em; padding: 0; margin: 0 0 em(15,22);
     word-wrap: break-word;
 
@@ -30,13 +36,13 @@
 
 .attireTextType1 {
 
-	@include fontSansLight;
+    @include fontSansLight;
     font-size: 2.2em; padding: 0; margin: em(20,22) 0 em(20,22);
     color: $colorGrayDark3; line-height: 1.4;
 
     @include mediaMinWidth($breakpointMedium) {
 
-		font-size: 2.8em; margin: em(20,28) 0 em(30,28);
+        font-size: 2.8em; margin: em(20,28) 0 em(30,28);
 
     }
 

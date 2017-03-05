@@ -1,0 +1,35 @@
+// Colors
+$colorGrayDark1: #303030;
+$colorGrayDark2: lighten($colorGrayDark1,20%);
+$colorGrayDark3: lighten($colorGrayDark1,25%);
+$colorGrayLight1: darken(#ededed,4%);
+$colorGrayLight2: darken($colorGrayLight1,5%);
+$colorGrayLight3: darken($colorGrayLight1,10%);
+$colorMain1: #2B91F5;
+
+// Breakpoints
+$preakpointSmall: 400;
+$breakpointMedium: 720;
+
+// Icons
+$icons: (
+    menu: '\e603',
+    arrowRight: '\e901',
+    mail: '\e903',
+    facebook: '\e608',
+    github: '\e902',
+    twitter: '\e609',
+    code: '\eaab'
+);
+
+// Misc
+$docsHeaderHeight: 50;
+$docsSidebarWidth: 320;
+$assetDistPath: 'https://rawgit.com/dbrekalo/attire/master/dist/';
+
+// Font mixins
+@mixin fontSansLight { font-family: Lato, Arial, sans-serif; font-weight: 300; font-style: normal; }
+@mixin fontSansNormal { font-family: Lato, Arial, sans-serif; font-weight: 400; font-style: normal; }
+@mixin fontSansBold { font-family: Lato, Arial, sans-serif; font-weight: 700; font-style: normal; }
+@mixin fontSansUltraBold { font-family: Lato, Arial, sans-serif; font-weight: 900; font-style: normal; }
+

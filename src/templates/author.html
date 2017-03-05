@@ -1,0 +1,23 @@
+<nav class="attireAuthor {{ 'withImage' if author.image else 'noImage' }}">
+    {% if author.image %}
+    <a class="imageElement" href="{{ author.url }}">
+        <img src="{{ author.image }}" alt="{{ author.caption }}">
+    </a>
+    {% endif %}
+    {% if author.caption %}
+    <a class="name" href="{{ author.url }}">{{ author.caption }}</a>
+    {% endif %}
+    {% if author.email or author.github or author.twitter %}
+    <p class="socialBox">
+        {% if author.email %}
+        <a href="mailto:{{ author.email }}" class="iconMail" title="Contact me by email">Contact me by email</a>
+        {% endif %}
+        {% if author.github %}
+        <a href="{{ author.github }}" class="iconGithub" title="Find me on Github">Find me on Github</a>
+        {% endif %}
+        {% if author.twitter %}
+        <a href="{{ author.twitter }}" class="iconTwitter" title="Reach me on Twitter">Reach me on Twitter</a>
+        {% endif %}
+    </p>
+    {% endif %}
+</nav>

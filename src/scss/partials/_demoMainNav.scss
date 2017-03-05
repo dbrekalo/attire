@@ -1,0 +1,67 @@
+@include keyframes(attireNavEnter) {
+    from { opacity: 0; @include transform(translate3d(0, -1em, 0)); }
+    to { opacity: 1; @include transform(translate3d(0, 0, 0)); }
+}
+
+.attireMainNav {
+
+    position: relative; margin-bottom: -1em; z-index: 10;
+    background-color: #fff;
+
+    > .toggleBtn {
+
+        @include normalizeButton;
+        @include iconReplacement(60,60);
+
+        &:before { font-size: 2.6em; width: em(60,26); }
+
+    }
+
+    > ul { padding: 0 0 1em; display: none; }
+
+    &.isActive {
+
+        margin-bottom: 0;
+
+        > ul {
+
+            @include animation(attireNavEnter 0.3s);
+            display: block;
+
+        }
+
+    }
+
+    a {
+
+        font-size: 1.4em; display: block; padding: em(15,14) em(20,14);
+        color: $colorGrayDark2; letter-spacing: 0.07em;
+        text-transform: uppercase;
+
+        &:hover { color: $colorMain1; }
+
+    }
+
+    @include mediaMinWidth($breakpointMedium) {
+
+        margin-bottom: 0;
+
+        > .toggleBtn { display: none; }
+
+        > ul {
+
+            display: block; overflow: hidden; padding: 0 1.5em;
+
+        }
+
+        li { float: left; }
+
+        a {
+
+            font-size: 1.4em; display: block; padding: em(20,14) em(15,14);
+
+        }
+
+    }
+
+}

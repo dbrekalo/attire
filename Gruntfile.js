@@ -1,26 +1,25 @@
-/* jshint node: true */
+var attire = require('./index.js');
+
 module.exports = function(grunt) {
+
+    var environment = grunt.option('env') || 'development';
+    var isDevEnvironment = environment === 'development';
 
     grunt.initConfig({
 
         sass: {
-            expanded: {
-                files: {
-                    'dist/css/build.css': 'src/scss/main.scss'
+            app: {
+                files: isDevEnvironment ? {
+                    'dist/css/build.css': 'src/scss/demoApp.scss',
+                    'dist/css/demoBuild.css': 'src/scss/demoApp.scss',
+                    'dist/css/docsBuild.css': 'src/scss/docsApp.scss'
+                } : {
+                    'dist/css/build.min.css': 'src/scss/demoApp.scss',
+                    'dist/css/demoBuild.min.css': 'src/scss/demoApp.scss',
+                    'dist/css/docsBuild.min.css': 'src/scss/docsApp.scss'
                 },
                 options: {
-                    outputStyle: 'expanded',
-                    sourceMap: false,
-                    precision: 5,
-                    includePaths: ['node_modules']
-                }
-            },
-            minified: {
-                files: {
-                    'dist/css/build.min.css': 'src/scss/main.scss'
-                },
-                options: {
-                    outputStyle: 'compressed',
+                    outputStyle: isDevEnvironment ? 'expanded' : 'compressed',
                     sourceMap: false,
                     precision: 5,
                     includePaths: ['node_modules']
@@ -32,7 +31,51 @@ module.exports = function(grunt) {
             options: {
                 configFile: '.eslintrc.js'
             },
-            target: ['src/js/**/*.js', 'Gruntfile.js']
+            target: [
+                'src/js/**/*.js',
+                'index.js',
+                'buildDocs.js',
+                'buildDemo.js',
+                'Gruntfile.js'
+            ]
+        },
+
+        sync: {
+            fonts: {
+                files: [{
+                    cwd: 'src/fonts/icons/fonts',
+                    src: ['**/*'],
+                    dest: 'dist/fonts'
+                }, {
+                    cwd: 'src/fonts/webFont',
+                    src: ['**/*'],
+                    dest: 'dist/fonts'
+                }],
+                updateAndDelete: true
+            },
+            images: {
+                files: [{
+                    cwd: 'src/images',
+                    src: ['**/*'],
+                    dest: 'dist/images'
+                }],
+                updateAndDelete: true
+            }
+        },
+
+        googlefonts: {
+            build: {
+                options: {
+                    fontPath: 'src/fonts/webFont',
+                    cssFile: 'src/scss/partials/_webFonts.scss',
+                    httpPath: 'https://rawgit.com/dbrekalo/attire/master/dist/fonts/',
+                    formats: {eot: true, ttf: true, woff: true, woff2: true, svg: true},
+                    fonts: [{
+                        family: 'Lato',
+                        styles: [300, 400, 700, 900]
+                    }]
+                }
+            }
         },
 
         bump: {
@@ -65,9 +108,71 @@ module.exports = function(grunt) {
 
     });
 
+    grunt.registerTask('buildDocs', function() {
+
+        var done = this.async();
+
+        attire.buildDocs({
+            files: [
+                {
+                    path: './test-docs-md/Section1.md',
+                    emphasizeLead: true,
+                    author: {
+                        caption: 'Damir Brekalo',
+                        url: 'github.com/dbrekalo',
+                        mail: 'dbrekalo@gmail.com',
+                        github: 'github.com/dbrekalo',
+                        twitter: 'https://twitter.com/dbrekalo'
+                    }
+                },
+                './test-docs-md/Section2.md'
+            ],
+            dest: './docs/',
+            projectTitle: 'attire docs'
+        }).then(function() {
+            done();
+            grunt.log.ok(['Docs builded']);
+        });
+
+    });
+
+    grunt.registerTask('buildDemo', function() {
+
+        var done = this.async();
+
+        attire.buildDemo({
+            file: 'README.md',
+            dest: 'index.html',
+            title: 'Attire - build demo and documentation pages',
+            description: 'Frontend setup and styling for simple and responsive demo pages',
+            canonicalUrl: 'https://github.com/dbrekalo/attire/',
+            githubUrl: 'https://github.com/dbrekalo/attire',
+            userRepositories: {
+                user: 'dbrekalo',
+                onlyWithPages: true
+            },
+            author: {
+                caption: 'Damir Brekalo',
+                url: 'https://github.com/dbrekalo',
+                image: 'https://s.gravatar.com/avatar/32754a476fb3db1c5a1f9ad80c65d89d?s=80',
+                email: 'dbrekalo@gmail.com',
+                github: 'github.com/dbrekalo',
+                twitter: 'https://twitter.com/dbrekalo'
+            },
+            afterParse: function($) {
+                $('a').first().parent().remove();
+            },
+            inlineCss: true,
+        }).then(function() {
+            done();
+            grunt.log.ok(['Demo builded']);
+        });
+
+    });
+
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['eslint', 'sass']);
+    grunt.registerTask('build', ['eslint', 'googlefonts', 'sass', 'sync', 'buildDemo']);
 
 };

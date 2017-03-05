@@ -1,0 +1,20 @@
+.attireNav {
+
+    > .toggleBtn {
+
+        position: fixed; top: 0; right: 0;
+
+        @include normalizeButton;
+        @include iconReplacement(60,$docsHeaderHeight);
+
+        &:before { font-size: 2.6em; }
+
+    }
+
+    > .panel {
+
+        position: fixed; top: 0; bottom: 0; display: none;
+
+    }
+
+}

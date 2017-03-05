@@ -1,17 +1,31 @@
 {
   "name": "attire",
-  "description": "Theme and frontend setup for simple and responsive demo pages.",
+  "description": "Theme and frontend setup for simple and responsive demo pages",
   "version": "1.2.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/dbrekalo/attire"
   },
   "scripts": {
-    "watch": "npm run build && grunt watch & webpack --env=development --watch --progress --colors",
-    "build": "grunt build && webpack --env=development --progress --colors && webpack --env=production --progress --colors",
+    "watch": "npm run build:development && npm run watch:withoutBuild",
+    "watch:withoutBuild": "grunt watch & webpack --env=development --watch --progress --colors",
+    "build:development": "grunt build && webpack --env=development --progress --colors",
+    "build:production": "grunt build --env=production && webpack --env=production --progress --colors",
+    "build:demo": "grunt buildDemo",
+    "build:docs": "grunt buildDocs",
+    "build": "npm run build:development && npm run build:production",
     "bump:patch": "grunt bump:patch",
     "bump:minor": "grunt bump:minor",
     "bump:major": "grunt bump:major"
+  },
+  "dependencies": {
+    "fs-extra": "^2.0.0",
+    "html-minifier": "^3.4.0",
+    "jquery": "^1",
+    "jsdom": "^9.11.0",
+    "marked": "^0.3.6",
+    "nunjucks": "^3.0.0",
+    "to-case": "^2.0.0"
   },
   "devDependencies": {
     "bourbon": "^4.3.2",
@@ -21,8 +35,9 @@
     "grunt-cli": "^1.2.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
+    "grunt-google-fonts": "^0.4.0",
     "grunt-sass": "^2.0.0",
-    "jquery": "^1",
+    "grunt-sync": "^0.6.2",
     "jquery-simple-view": "^2.1.2",
     "load-grunt-tasks": "^3.5.2",
     "normalize.css": "^5.0.0",
