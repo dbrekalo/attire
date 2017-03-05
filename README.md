@@ -11,7 +11,7 @@ Paste in html, adjust it, include your library distributable via script tag and 
 
 ## How to use
 You can start by saving demo page html into your new html document. And go on adjusting from there.
-Or you can examine [how others did it](#section-built-with-attire).
+Or you can examine [how others did it](#built-with-attire).
 
 Attire is a html boilerplate for your project index.html page. All you change is content of this html document.
 All static assets (javascript, css and icons) are loaded from cdn so ideally you don't need to mess with this. If you need to link to your
