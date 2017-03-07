@@ -116,7 +116,7 @@ module.exports = function(userOptions) {
         assetDistPath: 'https://rawgit.com/dbrekalo/attire/master/dist/'
     }, userOptions);
 
-    options.cssFiles = [options.inlineCss ? 'dist/css/build.min.css' : options.assetDistPath + 'css/build.min.css'].concat(options.cssFiles);
+    options.cssFiles = [options.inlineCss ? path.resolve(__dirname, 'dist/css/build.min.css') : options.assetDistPath + 'css/build.min.css'].concat(options.cssFiles);
     options.jsFiles = [options.assetDistPath + 'js/build.min.js'].concat(options.jsFiles);
 
     if (options.inlineCss) {
