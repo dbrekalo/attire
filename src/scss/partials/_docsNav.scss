@@ -1,20 +1,200 @@
 .attireNav {
 
-    > .toggleBtn {
+    @include mediaMaxWidth($breakpointMedium) {
 
-        position: fixed; top: 0; right: 0;
+        position: absolute; right: 0; top: 0; bottom: 0; z-index: 20;
 
-        @include normalizeButton;
-        @include iconReplacement(60,$docsHeaderHeight);
+        > .toggleBtn, > .closeBtn {
 
-        &:before { font-size: 2.6em; }
+            position: absolute; top: 0; right: 0;
+            background-color: #fff; border-radius: 50%;
+
+            @include normalizeButton;
+            @include iconReplacement(60,$docsHeaderHeight);
+
+            &:before { font-size: 2.6em; }
+
+        }
+
+        > .closeBtn {
+
+            @include transition(transform 0.3s);
+            @include transform(translate3d(6em, 0, 0));
+
+            position: fixed; z-index: 31;
+
+            &:before { font-size: 2em; }
+
+        }
+
+        a {
+
+            display: block; position: relative; font-size: 1.3em; padding: em(5,13) em(40,13); line-height: 1.4;
+            color: $colorGrayDark1;
+
+            &:before {
+
+                @include transition(opacity 0.2s);
+                @include fontSansBold;
+                content: "–"; position: absolute; left: em(18,13); top: em(5,13); opacity: 0;
+
+            }
+
+            &.selected:before {
+
+                opacity: 1;
+
+            }
+
+        }
+
+        > .panel {
+
+            @include transition(transform 0.3s);
+            @include transform(translate3d(28em, 0, 0));
+
+            position: fixed; top: 0; bottom: 0; right: 0; z-index: 30;
+            width: 28em; padding-top: 3.5em;
+            overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+            background-color: #FFF;
+
+            > .content {
+
+                > a {
+
+                    @include fontSansBold;
+
+                }
+
+                > ul {
+
+                    margin-bottom: 2.5em;
+
+                }
+
+            }
+
+        }
+
+        > .overlay {
+
+            @include transition(opacity 0.2s);
+
+            position: absolute; right: 0; top: 0; bottom: 0; width: 100vw;
+            pointer-events: none;
+            background-color: rgba(#000, 0.5); opacity: 0;
+
+        }
+
+        &.opened {
+
+            > .panel {
+
+                @include transform(translate3d(0, 0, 0));
+
+            }
+
+            > .overlay {
+
+                pointer-events: auto; opacity: 1;
+
+            }
+
+            > .closeBtn {
+
+                @include transform(translate3d(0, 0, 0));
+
+            }
+
+        }
 
     }
 
-    > .panel {
+    @include mediaMinWidth($breakpointMedium) {
 
-        position: fixed; top: 0; bottom: 0; display: none;
+        position: fixed; top: 0; bottom: 0; left: 0; z-index: 20;
+        padding-top: 14em; width: em($docsSidebarWidth, 10);
+        border-right: 1px solid $colorGrayLight1;
+
+        > .toggleBtn, > .closeBtn {
+
+            display: none;
+
+        }
+
+        a {
+
+            display: block; position: relative; font-size: 1.3em; padding: em(5,13) em(40,13); line-height: 1.4;
+            color: $colorGrayDark1;
+
+            &:before {
+
+                @include transition(opacity 0.2s);
+                @include fontSansBold;
+                content: "–"; position: absolute; left: em(18,13); top: em(5,13); opacity: 0;
+
+            }
+
+            &.selected:before {
+
+                opacity: 1;
+
+            }
+
+            &:hover {
+
+                color: $colorMain1;
+
+            }
+
+        }
+
+        > .panel {
+
+            height: 100%;
+            overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+
+            &.nano { overflow: hidden; }
+
+            > .content {
+
+                > a {
+
+                    @include fontSansBold;
+
+                }
+
+                > ul {
+
+                    margin-bottom: 2.5em;
+
+                }
+
+            }
+
+        }
 
     }
+
+}
+
+.nano > .nano-pane {
+
+    background: transparent;
+
+}
+
+.nano > .nano-pane > .nano-slider {
+
+    margin: 0 2px;
+    background: rgba(#000, 0.1);
+
+    &:hover { background: rgba(#000, 0.4); }
+
+}
+
+.nano > .nano-pane.active > .nano-slider {
+
+    background: rgba(#000, 0.4);
 
 }

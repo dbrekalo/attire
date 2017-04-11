@@ -30,6 +30,8 @@
   "devDependencies": {
     "bourbon": "^4.3.2",
     "console-polyfill": "^0.2.3",
+    "fastsearch": "^1.11.1",
+    "fuse.js": "^2.6.2",
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
@@ -40,6 +42,7 @@
     "grunt-sync": "^0.6.2",
     "jquery-simple-view": "^2.1.2",
     "load-grunt-tasks": "^3.5.2",
+    "nanoscroller": "^0.8.7",
     "normalize.css": "^5.0.0",
     "pelinkovac": "^0.1.2",
     "prismjs": "^1.6.0",

@@ -1,0 +1,20 @@
+.githubRibbon {
+
+    position: absolute; right: 0; top: 0; width: 10em; z-index: 20;
+    display: none;
+
+    > img {
+
+        display: block; width: 100%;
+
+    }
+
+    @include mediaMinWidth($breakpointMedium) {
+
+        body > & {
+            display: block; width: 14.9em;
+        }
+
+    }
+
+}

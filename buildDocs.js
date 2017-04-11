@@ -7,6 +7,7 @@ var marked = require('marked');
 var slugcase = require('to-case').slug;
 var nunjucks = require('nunjucks');
 var jsdom = require('jsdom');
+var minify = require('html-minifier').minify;
 
 function buildFileData(file) {
 
@@ -21,7 +22,7 @@ function buildFileData(file) {
             var pageData = {
                 title: $('h1').first().text(),
                 slug: slugcase(path.basename(file.path, '.md')),
-                sections: $('h2, h3').map(function(i, el) {
+                sections: $('h2').map(function(i, el) {
                     return $(el).text();
                 }).get(),
                 bodyHtml: $('body').html()
@@ -61,6 +62,7 @@ function buildPageBlocks(fileOptions, $) {
         $el.is('ul') && $el.addClass('attireListType1');
         $el.is('ol') && $el.addClass('attireListType1');
         $el.is('hr') && $el.addClass('attireSeparator mod1');
+        $el.is('pre') && $el.addClass('attireCodeHighlight');
 
         if ($el.is('p')) {
             if (fileOptions.emphasizeLead && blockCounter === 1 && $currentPageBlock.find('.attireTextType1').length === 0) {
@@ -89,8 +91,27 @@ module.exports = function(userOptions) {
     var options = Object.assign({
         files: [],
         projectTitle: 'My docs',
-        dest: './docs/'
+        searchPlaceholderCaption: 'Search documentation',
+        dest: './docs/',
+        jsFiles: [],
+        cssFiles: [],
+        minifyHtml: true,
+        inlineCss: false,
+        baseUrl: '',
+        // assetDistPath: 'https://rawgit.com/dbrekalo/attire/master/dist/',
+        assetDistPath: '../dist/',
+        githubUrl: undefined,
+        userRepositories: undefined
     }, userOptions);
+
+    options.cssFiles = [options.inlineCss ? path.resolve(__dirname, 'dist/css/docsBuild.css') : options.assetDistPath + 'css/docsBuild.css'].concat(options.cssFiles);
+    options.jsFiles = [options.assetDistPath + 'js/docsBuild.js'].concat(options.jsFiles);
+
+    if (options.inlineCss) {
+        options.cssFiles = options.cssFiles.map(function(cssFile) {
+            return fs.readFileSync(cssFile, 'utf8');
+        });
+    }
 
     return Promise.all(options.files.map(function(file) {
 
@@ -102,11 +123,13 @@ module.exports = function(userOptions) {
 
             return {
                 caption: pageData.title,
-                url: pageData.slug,
+                url: options.baseUrl + pageData.slug + '#' + slugcase(pageData.title),
+                pointer: pageData.slug + '#' + slugcase(pageData.title),
                 sections: pageData.sections.map(function(sectionTitle) {
                     return {
                         caption: sectionTitle,
-                        url: pageData.slug + '#' + slugcase(sectionTitle)
+                        url: options.baseUrl + pageData.slug + '#' + slugcase(sectionTitle),
+                        pointer: pageData.slug + '#' + slugcase(sectionTitle)
                     };
                 })
             };
@@ -117,9 +140,21 @@ module.exports = function(userOptions) {
 
             pageData.pageTitle = pageData.title + ' - ' + options.projectTitle;
             pageData.projectTitle = options.projectTitle;
+            pageData.searchPlaceholderCaption = options.searchPlaceholderCaption;
+            pageData.userRepositories = options.userRepositories,
             pageData.navigation = navigation;
+            pageData.inlineCss = options.inlineCss;
+            pageData.cssFiles = options.cssFiles;
+            pageData.jsFiles = options.jsFiles;
+            pageData.githubUrl = options.githubUrl;
+            pageData.assetDistPath = options.assetDistPath;
 
             var html = nunjucks.render(path.resolve(__dirname, 'src/templates/docs.html'), pageData);
+
+            if (options.minifyHtml) {
+                html = minify(html, {collapseWhitespace: true});
+            }
+
             fs.writeFileSync(options.dest + pageData.slug + '.html', html);
 
         });

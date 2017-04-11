@@ -1,6 +1,10 @@
 @include normalizePlusReset();
 @include pageEmEquivalent(10);
 @include defineIconFont("attire", $assetDistPath + "fonts/attireIcons", 'v1.0', $icons);
+@include keyframes(fadeIn) {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
 html,
 body {
@@ -11,7 +15,15 @@ body {
 
 body {
 
-    padding-top: 10em;
+    @include fontSansNormal;
+    font-size: 1em; min-width: 32em; position: relative;
+    color: $colorGrayDark1;
+
+    @include mediaMaxWidth($breakpointMedium) {
+
+        &.navOpened { overflow: hidden; }
+
+    }
 
     @include mediaMinWidth($breakpointMedium) {
 
@@ -21,16 +33,14 @@ body {
 
 }
 
-a {
+.attireArticle {
 
-    color: $colorMain1;
+    @include animation(fadeIn 0.2s);
 
 }
 
-body {
+a {
 
-    @include fontSansNormal;
-    font-size: 1em; min-width: 32em; position: relative;
-    color: $colorGrayDark1;
+    color: $colorMain1;
 
 }

@@ -1,7 +1,6 @@
 .attireHeader {
 
-    position: fixed; left: 0; top: 0; right: 0; box-sizing: border-box;
-    border-bottom: 1px solid $colorGrayLight1;
+    position: relative; box-sizing: border-box;
     background: #fff;
 
     > .title {
@@ -11,30 +10,92 @@
 
     }
 
-    > .attireSearch {
+    @include mediaMinWidth($breakpointMedium) {
 
-        display: block; padding: 0 1em 1em;
+        position: fixed; left: 0; top: 0; right: 0; width: em($docsSidebarWidth,10); padding: 2em;
+        z-index: 25;
 
-        &:before {
+    }
 
-            left: auto; font-size: 1.3em; right: em(10,13); top: em(16,13);
-            opacity: 0.5;
+}
 
-        }
+.attireSearch {
 
-        > input {
+    display: block; margin: 0 1em 1em; padding: 0 3.5em 0 0; box-sizing: border-box; z-index: 10;
+    background: #f5f5f5; border: 1px solid #f5f5f5;
 
-            display: block; width: 100%; font-size: 1.6em; padding: em(7,16) em(10,16);
-            background: rgba(#000, 0.04); border: 0;
+    &:before {
+
+        left: auto; font-size: 1.5em; right: 0; top: em(18,15);
+        opacity: 0.5;
+
+    }
+
+    > input {
+
+        display: block; width: 100%; font-size: 1.6em; padding: em(10,16) em(10,16);
+        background: transparent; border: 0;
+
+    }
+
+    &.fsr_opened {
+
+        border-color: $colorGrayLight1;
+        box-shadow: 0 0.2em 0.3em rgba(#000, 0.05);
+
+        > .fs_results {
+
+            display: block;
 
         }
 
     }
 
+    > .fs_results {
+
+        position: absolute; left: -1px; top: 100%; margin-top: -1px; right: -1px; padding: 1em 0;
+        background: #f5f5f5; border: 1px solid $colorGrayLight1; border-top: 0;
+        box-shadow: 0 0.2em 0.3em rgba(#000, 0.05);
+
+        &:before {
+
+            content: ""; position: absolute; left: 1em; right: 1em; top: 0;
+            border-top: 1px solid $colorGrayLight1;
+
+        }
+
+        display: none;
+
+    }
+
+    .fs_result_item, .fs_no_results {
+
+        display: block; font-size: 1.4em; line-height: 1.4; padding: em(5,14) em(10,14);
+        color: $colorGrayDark1;
+
+        &.focused {
+
+            color: $colorMain1;
+
+        }
+
+    }
+
+    .fs_no_results {
+
+        opacity: 0.5;
+
+    }
+
     @include mediaMinWidth($breakpointMedium) {
 
-        right: auto; bottom: 0; width: em($docsSidebarWidth,10); padding: 2em;
-        border-bottom: 0; border-right: 1px solid $colorGrayLight1;
+        margin: 0 1em 0; z-index: 35;
+
+        // > input {
+
+        //     padding: em(10,16) em(10,16);
+
+        // }
 
     }
 

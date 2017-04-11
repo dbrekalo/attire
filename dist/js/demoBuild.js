@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11083,38 +11083,13 @@ return jQuery;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-// Console-polyfill. MIT license.
-// https://github.com/paulmillr/console-polyfill
-// Make it safe to do console.log() always.
-(function(global) {
-  'use strict';
-  if (!global.console) {
-    global.console = {};
-  }
-  var con = global.console;
-  var prop, method;
-  var dummy = function() {};
-  var properties = ['memory'];
-  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-     'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
-     'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-  while (prop = properties.pop()) if (!con[prop]) con[prop] = {};
-  while (method = methods.pop()) if (typeof con[method] !== 'function') con[method] = dummy;
-  // Using `this` for web workers & supports Browserify / Webpack.
-})(typeof window === 'undefined' ? this : window);
-
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
 
     /* istanbul ignore next */
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(9), __webpack_require__(8), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6), __webpack_require__(5), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11363,7 +11338,420 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = window.$ = window.jQuery = __webpack_require__(0);
+var View = __webpack_require__(1);
+
+__webpack_require__(4);
+__webpack_require__(11);
+
+module.exports = View.extend({
+
+    setupCodeHighlight: function() {
+
+        var Prism = __webpack_require__(8);
+
+        __webpack_require__(7);
+
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+
+        Prism.highlightAll();
+
+        $('.attireCodeToggleBlock').on('click', '.attireCodeToggleBtn', function(e) {
+
+            $(e.delegateTarget).toggleClass('isActive');
+
+        });
+
+    },
+
+    setupAttireQueue: function() {
+
+        if (window.attireQueue && window.attireQueue.length) {
+            $.each(window.attireQueue, function(i, callback) {
+                callback($);
+            });
+        }
+
+        window.attireQueue = {
+            push: function(callback) {
+                callback($);
+            }
+        };
+
+    }
+
+});
+
+
+/***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(0);
+var View = __webpack_require__(1);
+var shuffleArray = __webpack_require__(9);
+
+module.exports = View.extend({
+
+    initialize: function() {
+
+        this.options = $.extend({}, this.$el.data());
+
+        this.$el.html('<p class="loader">Loading...</p>');
+
+        this.$el.whenInViewport(function() {
+
+            this.loadRepos(function(repositories) {
+
+                this.render(this.options.user, shuffleArray(repositories).slice(0, 3));
+
+            });
+
+        }, {threshold: 1000, context: this});
+
+    },
+
+    loadRepos: function(callback) {
+
+        var options = this.options;
+        var self = this;
+
+        $.get('https://api.github.com/users/' + options.user + '/repos', function(response) {
+
+            var currentRepoUrl = $('link[rel="canonical"]').attr('href');
+            var currentRepoName = currentRepoUrl ? $.map(currentRepoUrl.split('/'), function(part) {
+                return part ? part : undefined;
+            }).slice(-1)[0] : undefined;
+
+            var repositories = $.map(response, function(repo) {
+
+                var includeRepo =
+                    (options.onlyWithPages ? repo.has_pages : true) &&
+                    (options.excludeRepo ? options.excludeRepo.split(',').indexOf(repo.name) < 0 : true) &&
+                    (currentRepoName ? currentRepoName !== repo.name : true);
+
+                return includeRepo ? {
+                    title: repo.name,
+                    description: repo.description,
+                    url: repo.homepage || repo.html_url
+                } : undefined;
+            });
+
+            callback && callback.call(self, repositories);
+
+        });
+
+    },
+
+    render: function(userName, repositories) {
+
+        var $list = $('<ul />');
+
+        $.each(repositories, function(i, repo) {
+            $list.append(
+                '<li>' +
+                    '<a class="attireUserRepo" href="' + repo.url + '">' +
+                        '<h3 class="title">' + repo.title + '</h3>' +
+                        '<p class="description">' + repo.description + '</p>' +
+                    '</a>' +
+                '</li>'
+            );
+        });
+
+        this.$el
+            .empty()
+            .append('<h2 class="title">More from ' + userName + '</h2>')
+            .append($list);
+
+    }
+
+});
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+// Console-polyfill. MIT license.
+// https://github.com/paulmillr/console-polyfill
+// Make it safe to do console.log() always.
+(function(global) {
+  'use strict';
+  if (!global.console) {
+    global.console = {};
+  }
+  var con = global.console;
+  var prop, method;
+  var dummy = function() {};
+  var properties = ['memory'];
+  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+     'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+     'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+  while (prop = properties.pop()) if (!con[prop]) con[prop] = {};
+  while (method = methods.pop()) if (typeof con[method] !== 'function') con[method] = dummy;
+  // Using `this` for web workers & supports Browserify / Webpack.
+})(typeof window === 'undefined' ? this : window);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
+
+    /* istanbul ignore next */
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.mitty = factory();
+    }
+
+}(this, function() {
+
+    var api = {
+
+        on: function(eventName, callback) {
+            registerEvent(this, this, eventName, callback);
+            return this;
+        },
+
+        listenTo: function(publisher, eventName, callback) {
+            registerEvent(publisher, this, eventName, callback);
+            this._mittyListenTo = this._mittyListenTo || [];
+            indexOf(this._mittyListenTo, publisher) < 0 && this._mittyListenTo.push(publisher);
+            return this;
+        },
+
+        off: function(eventName, callback) {
+            removeFromPublisher(this, null, eventName, callback);
+            return this;
+        },
+
+        stopListening: function(publisher, eventName, callback) {
+            removeFromListener(this, publisher, eventName, callback);
+            return this;
+        },
+
+        trigger: function(eventName, data) {
+            this._mittyOn && each(this._mittyOn, function(item) {
+                if (item.eventName === eventName) {
+                    item.callback.call(item.listener, data);
+                }
+            });
+            return this;
+        }
+    };
+
+    function each(collection, callback) {
+
+        if (collection instanceof Array) {
+            for (var i = 0; i < collection.length; i++) {
+                callback(collection[i], i);
+            }
+        } else {
+            for (var key in collection) {
+                collection.hasOwnProperty(key) && callback(key, collection[key]);
+            }
+        }
+
+    }
+
+    function indexOf(collection, objectToSearch) {
+
+        if (Array.prototype.indexOf) {
+            return collection.indexOf(objectToSearch);
+        } else {
+            for (var i = 0; i < collection.length; i++) {
+                if (collection[i] === objectToSearch) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+    }
+
+    function registerEvent(publisher, listener, eventName, callback) {
+
+        publisher._mittyOn = publisher._mittyOn || [];
+
+        publisher._mittyOn.push({
+            listener: listener,
+            eventName: eventName,
+            callback: callback
+        });
+
+    }
+
+    function removeFromPublisher(publisher, listener, eventName, callback) {
+
+        if (publisher._mittyOn && publisher._mittyOn.length) {
+
+            var criteria = {},
+            temp = [];
+
+            listener && (criteria.listener = listener);
+            callback && (criteria.callback = callback);
+            eventName && (criteria.eventName = eventName);
+
+            each(publisher._mittyOn, function(item) {
+
+                var shouldRemove = true;
+
+                each(criteria, function(name, ref) {
+                    if (item[name] !== ref) {
+                        shouldRemove = false;
+                    }
+                });
+
+                !shouldRemove && temp.push(item);
+
+            });
+
+            publisher._mittyOn = temp;
+
+        }
+
+    }
+
+    function containsListener(publisher, listener) {
+
+        if (publisher._mittyOn) {
+            for (var i = 0; i < publisher._mittyOn.length; i++) {
+                if (publisher._mittyOn[i].listener === listener) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    function removeFromListener(listener, publisher, eventName, callback) {
+
+        var listening = listener._mittyListenTo && listener._mittyListenTo.length > 0;
+
+        if (publisher && listening) {
+
+            removeFromPublisher(publisher, listener, eventName, callback);
+
+            if (!containsListener(publisher, listener)) {
+                listener._mittyListenTo.splice(indexOf(listener._mittyListenTo, publisher), 1);
+            }
+
+        } else if (listening) {
+
+            each(listener._mittyListenTo, function(item) {
+                removeFromPublisher(item, listener);
+            });
+            listener._mittyListenTo = [];
+
+        }
+
+    }
+
+    return function(objectToExtend) {
+
+        each(api, function(methodName, method) {
+            objectToExtend[methodName] = method;
+        });
+
+        return objectToExtend;
+
+    };
+
+}));
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
+    /* istanbul ignore next */
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.typeFactory = factory();
+    }
+
+}(this, function() {
+
+    function transferProperties(destination, source) {
+
+        for (var key in source) {
+            source.hasOwnProperty(key) && (destination[key] = source[key]);
+        }
+
+        return destination;
+
+    }
+
+    function factory(parentType, prototypeProperties, staticProperties) {
+
+        var generatedType = prototypeProperties.hasOwnProperty('constructor') ? prototypeProperties.constructor : function() {
+
+            if (parentType) {
+                parentType.apply(this, arguments);
+            } else {
+                this.initialize && this.initialize.apply(this, arguments);
+            }
+
+        };
+
+        if (parentType) {
+
+            var Surrogate = function() { this.constructor = generatedType; };
+            Surrogate.prototype = parentType.prototype;
+            generatedType.prototype = new Surrogate();
+
+            transferProperties(generatedType, parentType);
+        }
+
+        staticProperties && transferProperties(generatedType, staticProperties);
+        prototypeProperties && transferProperties(generatedType.prototype, prototypeProperties);
+
+        return generatedType;
+
+    }
+
+    return function(prototypeProperties, staticProperties) {
+
+        var createdType = factory(null, prototypeProperties, staticProperties);
+
+        createdType.extend = function(prototypeProperties, staticProperties) {
+
+            return factory(this, prototypeProperties, staticProperties);
+
+        };
+
+        return createdType;
+
+    };
+
+}));
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -11540,7 +11928,7 @@ Prism.hooks.add('before-sanity-check', function (env) {
 }());
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -12342,7 +12730,7 @@ Prism.languages.js = Prism.languages.javascript;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12431,226 +12819,34 @@ module.exports = shuffle;
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 10 */
+/***/ (function(module, exports) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root) {
-// lazy require symbols table
-var _symbols, removelist;
-function symbols(code) {
-    if (_symbols) return _symbols[code];
-    _symbols = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"unicode/category/So\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()));
-    removelist = ['sign','cross','of','symbol','staff','hand','black','white']
-        .map(function (word) {return new RegExp(word, 'gi')});
-    return _symbols[code];
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
 }
 
-function slug(string, opts) {
-    string = string.toString();
-    if ('string' === typeof opts)
-        opts = {replacement:opts};
-    opts = opts || {};
-    opts.mode = opts.mode || slug.defaults.mode;
-    var defaults = slug.defaults.modes[opts.mode];
-    var keys = ['replacement','multicharmap','charmap','remove','lower'];
-    for (var key, i = 0, l = keys.length; i < l; i++) { key = keys[i];
-        opts[key] = (key in opts) ? opts[key] : defaults[key];
-    }
-    if ('undefined' === typeof opts.symbols)
-        opts.symbols = defaults.symbols;
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
 
-    var lengths = [];
-    for (var key in opts.multicharmap) {
-        if (!opts.multicharmap.hasOwnProperty(key))
-            continue;
-
-        var len = key.length;
-        if (lengths.indexOf(len) === -1)
-            lengths.push(len);
-    }
-
-    var code, unicode, result = "";
-    for (var char, i = 0, l = string.length; i < l; i++) { char = string[i];
-        if (!lengths.some(function (len) {
-            var str = string.substr(i, len);
-            if (opts.multicharmap[str]) {
-                i += len - 1;
-                char = opts.multicharmap[str];
-                return true;
-            } else return false;
-        })) {
-            if (opts.charmap[char]) {
-                char = opts.charmap[char];
-                code = char.charCodeAt(0);
-            } else {
-                code = string.charCodeAt(i);
-            }
-            if (opts.symbols && (unicode = symbols(code))) {
-                char = unicode.name.toLowerCase();
-                for(var j = 0, rl = removelist.length; j < rl; j++) {
-                    char = char.replace(removelist[j], '');
-                }
-                char = char.replace(/^\s+|\s+$/g, '');
-            }
-        }
-        char = char.replace(/[^\w\s\-\.\_~]/g, ''); // allowed
-        if (opts.remove) char = char.replace(opts.remove, ''); // add flavour
-        result += char;
-    }
-    result = result.replace(/^\s+|\s+$/g, ''); // trim leading/trailing spaces
-    result = result.replace(/[-\s]+/g, opts.replacement); // convert spaces
-    result = result.replace(opts.replacement+"$",''); // remove trailing separator
-    if (opts.lower)
-      result = result.toLowerCase();
-    return result;
-};
-
-slug.defaults = {
-    mode: 'pretty',
-};
-
-slug.multicharmap = slug.defaults.multicharmap = {
-    '<3': 'love', '&&': 'and', '||': 'or', 'w/': 'with',
-};
-
-// https://code.djangoproject.com/browser/django/trunk/django/contrib/admin/media/js/urlify.js
-slug.charmap  = slug.defaults.charmap = {
-    // latin
-    'À': 'A', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE',
-    'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I',
-    'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O',
-    'Õ': 'O', 'Ö': 'O', 'Ő': 'O', 'Ø': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U',
-    'Ü': 'U', 'Ű': 'U', 'Ý': 'Y', 'Þ': 'TH', 'ß': 'ss', 'à':'a', 'á':'a',
-    'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e',
-    'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
-    'ð': 'd', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
-    'ő': 'o', 'ø': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u', 'ű': 'u',
-    'ý': 'y', 'þ': 'th', 'ÿ': 'y', 'ẞ': 'SS',
-    // greek
-    'α':'a', 'β':'b', 'γ':'g', 'δ':'d', 'ε':'e', 'ζ':'z', 'η':'h', 'θ':'8',
-    'ι':'i', 'κ':'k', 'λ':'l', 'μ':'m', 'ν':'n', 'ξ':'3', 'ο':'o', 'π':'p',
-    'ρ':'r', 'σ':'s', 'τ':'t', 'υ':'y', 'φ':'f', 'χ':'x', 'ψ':'ps', 'ω':'w',
-    'ά':'a', 'έ':'e', 'ί':'i', 'ό':'o', 'ύ':'y', 'ή':'h', 'ώ':'w', 'ς':'s',
-    'ϊ':'i', 'ΰ':'y', 'ϋ':'y', 'ΐ':'i',
-    'Α':'A', 'Β':'B', 'Γ':'G', 'Δ':'D', 'Ε':'E', 'Ζ':'Z', 'Η':'H', 'Θ':'8',
-    'Ι':'I', 'Κ':'K', 'Λ':'L', 'Μ':'M', 'Ν':'N', 'Ξ':'3', 'Ο':'O', 'Π':'P',
-    'Ρ':'R', 'Σ':'S', 'Τ':'T', 'Υ':'Y', 'Φ':'F', 'Χ':'X', 'Ψ':'PS', 'Ω':'W',
-    'Ά':'A', 'Έ':'E', 'Ί':'I', 'Ό':'O', 'Ύ':'Y', 'Ή':'H', 'Ώ':'W', 'Ϊ':'I',
-    'Ϋ':'Y',
-    // turkish
-    'ş':'s', 'Ş':'S', 'ı':'i', 'İ':'I',
-    'ğ':'g', 'Ğ':'G',
-    // russian
-    'а':'a', 'б':'b', 'в':'v', 'г':'g', 'д':'d', 'е':'e', 'ё':'yo', 'ж':'zh',
-    'з':'z', 'и':'i', 'й':'j', 'к':'k', 'л':'l', 'м':'m', 'н':'n', 'о':'o',
-    'п':'p', 'р':'r', 'с':'s', 'т':'t', 'у':'u', 'ф':'f', 'х':'h', 'ц':'c',
-    'ч':'ch', 'ш':'sh', 'щ':'sh', 'ъ':'u', 'ы':'y', 'ь':'', 'э':'e', 'ю':'yu',
-    'я':'ya',
-    'А':'A', 'Б':'B', 'В':'V', 'Г':'G', 'Д':'D', 'Е':'E', 'Ё':'Yo', 'Ж':'Zh',
-    'З':'Z', 'И':'I', 'Й':'J', 'К':'K', 'Л':'L', 'М':'M', 'Н':'N', 'О':'O',
-    'П':'P', 'Р':'R', 'С':'S', 'Т':'T', 'У':'U', 'Ф':'F', 'Х':'H', 'Ц':'C',
-    'Ч':'Ch', 'Ш':'Sh', 'Щ':'Sh', 'Ъ':'U', 'Ы':'Y', 'Ь':'', 'Э':'E', 'Ю':'Yu',
-    'Я':'Ya',
-    // ukranian
-    'Є':'Ye', 'І':'I', 'Ї':'Yi', 'Ґ':'G', 'є':'ye', 'і':'i', 'ї':'yi', 'ґ':'g',
-    // czech
-    'č':'c', 'ď':'d', 'ě':'e', 'ň': 'n', 'ř':'r', 'š':'s', 'ť':'t', 'ů':'u',
-    'ž':'z', 'Č':'C', 'Ď':'D', 'Ě':'E', 'Ň': 'N', 'Ř':'R', 'Š':'S', 'Ť':'T',
-    'Ů':'U', 'Ž':'Z',
-    // polish
-    'ą':'a', 'ć':'c', 'ę':'e', 'ł':'l', 'ń':'n', 'ś':'s', 'ź':'z',
-    'ż':'z', 'Ą':'A', 'Ć':'C', 'Ę':'E', 'Ł':'L', 'Ń':'N', 'Ś':'S',
-    'Ź':'Z', 'Ż':'Z',
-    // latvian
-    'ā':'a', 'ē':'e', 'ģ':'g', 'ī':'i', 'ķ':'k', 'ļ':'l', 'ņ':'n',
-    'ū':'u', 'Ā':'A', 'Ē':'E', 'Ģ':'G', 'Ī':'I',
-    'Ķ':'K', 'Ļ':'L', 'Ņ':'N', 'Ū':'U',
-    // lithuanian
-    'ė':'e', 'į':'i', 'ų':'u', 'Ė': 'E', 'Į': 'I', 'Ų':'U',
-    // romanian
-    'ț':'t', 'Ț':'T', 'ţ':'t', 'Ţ':'T', 'ș':'s', 'Ș':'S', 'ă':'a', 'Ă':'A',
-    // vietnamese
-    'Ạ': 'A', 'Ả': 'A', 'Ầ': 'A', 'Ấ': 'A', 'Ậ': 'A', 'Ẩ': 'A', 'Ẫ': 'A',
-    'Ằ': 'A', 'Ắ': 'A', 'Ặ': 'A', 'Ẳ': 'A', 'Ẵ': 'A', 'Ẹ': 'E', 'Ẻ': 'E',
-    'Ẽ': 'E', 'Ề': 'E', 'Ế': 'E', 'Ệ': 'E', 'Ể': 'E', 'Ễ': 'E', 'Ị': 'I',
-    'Ỉ': 'I', 'Ĩ': 'I', 'Ọ': 'O', 'Ỏ': 'O', 'Ồ': 'O', 'Ố': 'O', 'Ộ': 'O',
-    'Ổ': 'O', 'Ỗ': 'O', 'Ơ': 'O', 'Ờ': 'O', 'Ớ': 'O', 'Ợ': 'O', 'Ở': 'O',
-    'Ỡ': 'O', 'Ụ': 'U', 'Ủ': 'U', 'Ũ': 'U', 'Ư': 'U', 'Ừ': 'U', 'Ứ': 'U',
-    'Ự': 'U', 'Ử': 'U', 'Ữ': 'U', 'Ỳ': 'Y', 'Ỵ': 'Y', 'Ỷ': 'Y', 'Ỹ': 'Y',
-    'Đ': 'D', 'ạ': 'a', 'ả': 'a', 'ầ': 'a', 'ấ': 'a', 'ậ': 'a', 'ẩ': 'a',
-    'ẫ': 'a', 'ằ': 'a', 'ắ': 'a', 'ặ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ẹ': 'e',
-    'ẻ': 'e', 'ẽ': 'e', 'ề': 'e', 'ế': 'e', 'ệ': 'e', 'ể': 'e', 'ễ': 'e',
-    'ị': 'i', 'ỉ': 'i', 'ĩ': 'i', 'ọ': 'o', 'ỏ': 'o', 'ồ': 'o', 'ố': 'o',
-    'ộ': 'o', 'ổ': 'o', 'ỗ': 'o', 'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ợ': 'o',
-    'ở': 'o', 'ỡ': 'o', 'ụ': 'u', 'ủ': 'u', 'ũ': 'u', 'ư': 'u', 'ừ': 'u',
-    'ứ': 'u', 'ự': 'u', 'ử': 'u', 'ữ': 'u', 'ỳ': 'y', 'ỵ': 'y', 'ỷ': 'y',
-    'ỹ': 'y', 'đ': 'd',
-    // currency
-    '€': 'euro', '₢': 'cruzeiro', '₣': 'french franc', '£': 'pound',
-    '₤': 'lira', '₥': 'mill', '₦': 'naira', '₧': 'peseta', '₨': 'rupee',
-    '₩': 'won', '₪': 'new shequel', '₫': 'dong', '₭': 'kip', '₮': 'tugrik',
-    '₯': 'drachma', '₰': 'penny', '₱': 'peso', '₲': 'guarani', '₳': 'austral',
-    '₴': 'hryvnia', '₵': 'cedi', '¢': 'cent', '¥': 'yen', '元': 'yuan',
-    '円': 'yen', '﷼': 'rial', '₠': 'ecu', '¤': 'currency', '฿': 'baht',
-    "$": 'dollar', '₹': 'indian rupee',
-    // symbols
-    '©':'(c)', 'œ': 'oe', 'Œ': 'OE', '∑': 'sum', '®': '(r)', '†': '+',
-    '“': '"', '”': '"', '‘': "'", '’': "'", '∂': 'd', 'ƒ': 'f', '™': 'tm',
-    '℠': 'sm', '…': '...', '˚': 'o', 'º': 'o', 'ª': 'a', '•': '*',
-    '∆': 'delta', '∞': 'infinity', '♥': 'love', '&': 'and', '|': 'or',
-    '<': 'less', '>': 'greater',
-};
-
-slug.defaults.modes = {
-    rfc3986: {
-        replacement: '-',
-        symbols: true,
-        remove: null,
-        lower: true,
-        charmap: slug.defaults.charmap,
-        multicharmap: slug.defaults.multicharmap,
-    },
-    pretty: {
-        replacement: '-',
-        symbols: true,
-        remove: /[.]/g,
-        lower: false,
-        charmap: slug.defaults.charmap,
-        multicharmap: slug.defaults.multicharmap,
-    },
-};
-
-// Be compatible with different module systems
-
-if (true) { // AMD
-    // dont load symbols table in the browser
-    for (var key in slug.defaults.modes) {
-        if (!slug.defaults.modes.hasOwnProperty(key))
-            continue;
-
-        slug.defaults.modes[key].symbols = false;
-    }
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {return slug}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-} else if (typeof module !== 'undefined' && module.exports) { // CommonJS
-    symbols(); // preload symbols table
-    module.exports = slug;
-} else { // Script tag
-    // dont load symbols table in the browser
-    for (var key in slug.defaults.modes) {
-        if (!slug.defaults.modes.hasOwnProperty(key))
-            continue;
-
-        slug.defaults.modes[key].symbols = false;
-    }
-    root.slug = slug;
-}
-
-}(this));
+module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
@@ -12966,298 +13162,238 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 8 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-
-    /* istanbul ignore next */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        root.mitty = factory();
-    }
-
-}(this, function() {
-
-    var api = {
-
-        on: function(eventName, callback) {
-            registerEvent(this, this, eventName, callback);
-            return this;
-        },
-
-        listenTo: function(publisher, eventName, callback) {
-            registerEvent(publisher, this, eventName, callback);
-            this._mittyListenTo = this._mittyListenTo || [];
-            indexOf(this._mittyListenTo, publisher) < 0 && this._mittyListenTo.push(publisher);
-            return this;
-        },
-
-        off: function(eventName, callback) {
-            removeFromPublisher(this, null, eventName, callback);
-            return this;
-        },
-
-        stopListening: function(publisher, eventName, callback) {
-            removeFromListener(this, publisher, eventName, callback);
-            return this;
-        },
-
-        trigger: function(eventName, data) {
-            this._mittyOn && each(this._mittyOn, function(item) {
-                if (item.eventName === eventName) {
-                    item.callback.call(item.listener, data);
-                }
-            });
-            return this;
-        }
-    };
-
-    function each(collection, callback) {
-
-        if (collection instanceof Array) {
-            for (var i = 0; i < collection.length; i++) {
-                callback(collection[i], i);
-            }
-        } else {
-            for (var key in collection) {
-                collection.hasOwnProperty(key) && callback(key, collection[key]);
-            }
-        }
-
-    }
-
-    function indexOf(collection, objectToSearch) {
-
-        if (Array.prototype.indexOf) {
-            return collection.indexOf(objectToSearch);
-        } else {
-            for (var i = 0; i < collection.length; i++) {
-                if (collection[i] === objectToSearch) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-    }
-
-    function registerEvent(publisher, listener, eventName, callback) {
-
-        publisher._mittyOn = publisher._mittyOn || [];
-
-        publisher._mittyOn.push({
-            listener: listener,
-            eventName: eventName,
-            callback: callback
-        });
-
-    }
-
-    function removeFromPublisher(publisher, listener, eventName, callback) {
-
-        if (publisher._mittyOn && publisher._mittyOn.length) {
-
-            var criteria = {},
-            temp = [];
-
-            listener && (criteria.listener = listener);
-            callback && (criteria.callback = callback);
-            eventName && (criteria.eventName = eventName);
-
-            each(publisher._mittyOn, function(item) {
-
-                var shouldRemove = true;
-
-                each(criteria, function(name, ref) {
-                    if (item[name] !== ref) {
-                        shouldRemove = false;
-                    }
-                });
-
-                !shouldRemove && temp.push(item);
-
-            });
-
-            publisher._mittyOn = temp;
-
-        }
-
-    }
-
-    function containsListener(publisher, listener) {
-
-        if (publisher._mittyOn) {
-            for (var i = 0; i < publisher._mittyOn.length; i++) {
-                if (publisher._mittyOn[i].listener === listener) {
-                    return true;
-                }
-            }
-        }
-        return false;
-
-    }
-
-    function removeFromListener(listener, publisher, eventName, callback) {
-
-        var listening = listener._mittyListenTo && listener._mittyListenTo.length > 0;
-
-        if (publisher && listening) {
-
-            removeFromPublisher(publisher, listener, eventName, callback);
-
-            if (!containsListener(publisher, listener)) {
-                listener._mittyListenTo.splice(indexOf(listener._mittyListenTo, publisher), 1);
-            }
-
-        } else if (listening) {
-
-            each(listener._mittyListenTo, function(item) {
-                removeFromPublisher(item, listener);
-            });
-            listener._mittyListenTo = [];
-
-        }
-
-    }
-
-    return function(objectToExtend) {
-
-        each(api, function(methodName, method) {
-            objectToExtend[methodName] = method;
-        });
-
-        return objectToExtend;
-
-    };
-
-}));
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-    /* istanbul ignore next */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        root.typeFactory = factory();
-    }
-
-}(this, function() {
-
-    function transferProperties(destination, source) {
-
-        for (var key in source) {
-            source.hasOwnProperty(key) && (destination[key] = source[key]);
-        }
-
-        return destination;
-
-    }
-
-    function factory(parentType, prototypeProperties, staticProperties) {
-
-        var generatedType = prototypeProperties.hasOwnProperty('constructor') ? prototypeProperties.constructor : function() {
-
-            if (parentType) {
-                parentType.apply(this, arguments);
-            } else {
-                this.initialize && this.initialize.apply(this, arguments);
-            }
-
-        };
-
-        if (parentType) {
-
-            var Surrogate = function() { this.constructor = generatedType; };
-            Surrogate.prototype = parentType.prototype;
-            generatedType.prototype = new Surrogate();
-
-            transferProperties(generatedType, parentType);
-        }
-
-        staticProperties && transferProperties(generatedType, staticProperties);
-        prototypeProperties && transferProperties(generatedType.prototype, prototypeProperties);
-
-        return generatedType;
-
-    }
-
-    return function(prototypeProperties, staticProperties) {
-
-        var createdType = factory(null, prototypeProperties, staticProperties);
-
-        createdType.extend = function(prototypeProperties, staticProperties) {
-
-            return factory(this, prototypeProperties, staticProperties);
-
-        };
-
-        return createdType;
-
-    };
-
-}));
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root) {
+// lazy require symbols table
+var _symbols, removelist;
+function symbols(code) {
+    if (_symbols) return _symbols[code];
+    _symbols = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"unicode/category/So\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+    removelist = ['sign','cross','of','symbol','staff','hand','black','white']
+        .map(function (word) {return new RegExp(word, 'gi')});
+    return _symbols[code];
 }
 
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
+function slug(string, opts) {
+    string = string.toString();
+    if ('string' === typeof opts)
+        opts = {replacement:opts};
+    opts = opts || {};
+    opts.mode = opts.mode || slug.defaults.mode;
+    var defaults = slug.defaults.modes[opts.mode];
+    var keys = ['replacement','multicharmap','charmap','remove','lower'];
+    for (var key, i = 0, l = keys.length; i < l; i++) { key = keys[i];
+        opts[key] = (key in opts) ? opts[key] : defaults[key];
+    }
+    if ('undefined' === typeof opts.symbols)
+        opts.symbols = defaults.symbols;
 
-module.exports = g;
+    var lengths = [];
+    for (var key in opts.multicharmap) {
+        if (!opts.multicharmap.hasOwnProperty(key))
+            continue;
+
+        var len = key.length;
+        if (lengths.indexOf(len) === -1)
+            lengths.push(len);
+    }
+
+    var code, unicode, result = "";
+    for (var char, i = 0, l = string.length; i < l; i++) { char = string[i];
+        if (!lengths.some(function (len) {
+            var str = string.substr(i, len);
+            if (opts.multicharmap[str]) {
+                i += len - 1;
+                char = opts.multicharmap[str];
+                return true;
+            } else return false;
+        })) {
+            if (opts.charmap[char]) {
+                char = opts.charmap[char];
+                code = char.charCodeAt(0);
+            } else {
+                code = string.charCodeAt(i);
+            }
+            if (opts.symbols && (unicode = symbols(code))) {
+                char = unicode.name.toLowerCase();
+                for(var j = 0, rl = removelist.length; j < rl; j++) {
+                    char = char.replace(removelist[j], '');
+                }
+                char = char.replace(/^\s+|\s+$/g, '');
+            }
+        }
+        char = char.replace(/[^\w\s\-\.\_~]/g, ''); // allowed
+        if (opts.remove) char = char.replace(opts.remove, ''); // add flavour
+        result += char;
+    }
+    result = result.replace(/^\s+|\s+$/g, ''); // trim leading/trailing spaces
+    result = result.replace(/[-\s]+/g, opts.replacement); // convert spaces
+    result = result.replace(opts.replacement+"$",''); // remove trailing separator
+    if (opts.lower)
+      result = result.toLowerCase();
+    return result;
+};
+
+slug.defaults = {
+    mode: 'pretty',
+};
+
+slug.multicharmap = slug.defaults.multicharmap = {
+    '<3': 'love', '&&': 'and', '||': 'or', 'w/': 'with',
+};
+
+// https://code.djangoproject.com/browser/django/trunk/django/contrib/admin/media/js/urlify.js
+slug.charmap  = slug.defaults.charmap = {
+    // latin
+    'À': 'A', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE',
+    'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I',
+    'Î': 'I', 'Ï': 'I', 'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O',
+    'Õ': 'O', 'Ö': 'O', 'Ő': 'O', 'Ø': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U',
+    'Ü': 'U', 'Ű': 'U', 'Ý': 'Y', 'Þ': 'TH', 'ß': 'ss', 'à':'a', 'á':'a',
+    'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a', 'æ': 'ae', 'ç': 'c', 'è': 'e',
+    'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
+    'ð': 'd', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o',
+    'ő': 'o', 'ø': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u', 'ű': 'u',
+    'ý': 'y', 'þ': 'th', 'ÿ': 'y', 'ẞ': 'SS',
+    // greek
+    'α':'a', 'β':'b', 'γ':'g', 'δ':'d', 'ε':'e', 'ζ':'z', 'η':'h', 'θ':'8',
+    'ι':'i', 'κ':'k', 'λ':'l', 'μ':'m', 'ν':'n', 'ξ':'3', 'ο':'o', 'π':'p',
+    'ρ':'r', 'σ':'s', 'τ':'t', 'υ':'y', 'φ':'f', 'χ':'x', 'ψ':'ps', 'ω':'w',
+    'ά':'a', 'έ':'e', 'ί':'i', 'ό':'o', 'ύ':'y', 'ή':'h', 'ώ':'w', 'ς':'s',
+    'ϊ':'i', 'ΰ':'y', 'ϋ':'y', 'ΐ':'i',
+    'Α':'A', 'Β':'B', 'Γ':'G', 'Δ':'D', 'Ε':'E', 'Ζ':'Z', 'Η':'H', 'Θ':'8',
+    'Ι':'I', 'Κ':'K', 'Λ':'L', 'Μ':'M', 'Ν':'N', 'Ξ':'3', 'Ο':'O', 'Π':'P',
+    'Ρ':'R', 'Σ':'S', 'Τ':'T', 'Υ':'Y', 'Φ':'F', 'Χ':'X', 'Ψ':'PS', 'Ω':'W',
+    'Ά':'A', 'Έ':'E', 'Ί':'I', 'Ό':'O', 'Ύ':'Y', 'Ή':'H', 'Ώ':'W', 'Ϊ':'I',
+    'Ϋ':'Y',
+    // turkish
+    'ş':'s', 'Ş':'S', 'ı':'i', 'İ':'I',
+    'ğ':'g', 'Ğ':'G',
+    // russian
+    'а':'a', 'б':'b', 'в':'v', 'г':'g', 'д':'d', 'е':'e', 'ё':'yo', 'ж':'zh',
+    'з':'z', 'и':'i', 'й':'j', 'к':'k', 'л':'l', 'м':'m', 'н':'n', 'о':'o',
+    'п':'p', 'р':'r', 'с':'s', 'т':'t', 'у':'u', 'ф':'f', 'х':'h', 'ц':'c',
+    'ч':'ch', 'ш':'sh', 'щ':'sh', 'ъ':'u', 'ы':'y', 'ь':'', 'э':'e', 'ю':'yu',
+    'я':'ya',
+    'А':'A', 'Б':'B', 'В':'V', 'Г':'G', 'Д':'D', 'Е':'E', 'Ё':'Yo', 'Ж':'Zh',
+    'З':'Z', 'И':'I', 'Й':'J', 'К':'K', 'Л':'L', 'М':'M', 'Н':'N', 'О':'O',
+    'П':'P', 'Р':'R', 'С':'S', 'Т':'T', 'У':'U', 'Ф':'F', 'Х':'H', 'Ц':'C',
+    'Ч':'Ch', 'Ш':'Sh', 'Щ':'Sh', 'Ъ':'U', 'Ы':'Y', 'Ь':'', 'Э':'E', 'Ю':'Yu',
+    'Я':'Ya',
+    // ukranian
+    'Є':'Ye', 'І':'I', 'Ї':'Yi', 'Ґ':'G', 'є':'ye', 'і':'i', 'ї':'yi', 'ґ':'g',
+    // czech
+    'č':'c', 'ď':'d', 'ě':'e', 'ň': 'n', 'ř':'r', 'š':'s', 'ť':'t', 'ů':'u',
+    'ž':'z', 'Č':'C', 'Ď':'D', 'Ě':'E', 'Ň': 'N', 'Ř':'R', 'Š':'S', 'Ť':'T',
+    'Ů':'U', 'Ž':'Z',
+    // polish
+    'ą':'a', 'ć':'c', 'ę':'e', 'ł':'l', 'ń':'n', 'ś':'s', 'ź':'z',
+    'ż':'z', 'Ą':'A', 'Ć':'C', 'Ę':'E', 'Ł':'L', 'Ń':'N', 'Ś':'S',
+    'Ź':'Z', 'Ż':'Z',
+    // latvian
+    'ā':'a', 'ē':'e', 'ģ':'g', 'ī':'i', 'ķ':'k', 'ļ':'l', 'ņ':'n',
+    'ū':'u', 'Ā':'A', 'Ē':'E', 'Ģ':'G', 'Ī':'I',
+    'Ķ':'K', 'Ļ':'L', 'Ņ':'N', 'Ū':'U',
+    // lithuanian
+    'ė':'e', 'į':'i', 'ų':'u', 'Ė': 'E', 'Į': 'I', 'Ų':'U',
+    // romanian
+    'ț':'t', 'Ț':'T', 'ţ':'t', 'Ţ':'T', 'ș':'s', 'Ș':'S', 'ă':'a', 'Ă':'A',
+    // vietnamese
+    'Ạ': 'A', 'Ả': 'A', 'Ầ': 'A', 'Ấ': 'A', 'Ậ': 'A', 'Ẩ': 'A', 'Ẫ': 'A',
+    'Ằ': 'A', 'Ắ': 'A', 'Ặ': 'A', 'Ẳ': 'A', 'Ẵ': 'A', 'Ẹ': 'E', 'Ẻ': 'E',
+    'Ẽ': 'E', 'Ề': 'E', 'Ế': 'E', 'Ệ': 'E', 'Ể': 'E', 'Ễ': 'E', 'Ị': 'I',
+    'Ỉ': 'I', 'Ĩ': 'I', 'Ọ': 'O', 'Ỏ': 'O', 'Ồ': 'O', 'Ố': 'O', 'Ộ': 'O',
+    'Ổ': 'O', 'Ỗ': 'O', 'Ơ': 'O', 'Ờ': 'O', 'Ớ': 'O', 'Ợ': 'O', 'Ở': 'O',
+    'Ỡ': 'O', 'Ụ': 'U', 'Ủ': 'U', 'Ũ': 'U', 'Ư': 'U', 'Ừ': 'U', 'Ứ': 'U',
+    'Ự': 'U', 'Ử': 'U', 'Ữ': 'U', 'Ỳ': 'Y', 'Ỵ': 'Y', 'Ỷ': 'Y', 'Ỹ': 'Y',
+    'Đ': 'D', 'ạ': 'a', 'ả': 'a', 'ầ': 'a', 'ấ': 'a', 'ậ': 'a', 'ẩ': 'a',
+    'ẫ': 'a', 'ằ': 'a', 'ắ': 'a', 'ặ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ẹ': 'e',
+    'ẻ': 'e', 'ẽ': 'e', 'ề': 'e', 'ế': 'e', 'ệ': 'e', 'ể': 'e', 'ễ': 'e',
+    'ị': 'i', 'ỉ': 'i', 'ĩ': 'i', 'ọ': 'o', 'ỏ': 'o', 'ồ': 'o', 'ố': 'o',
+    'ộ': 'o', 'ổ': 'o', 'ỗ': 'o', 'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ợ': 'o',
+    'ở': 'o', 'ỡ': 'o', 'ụ': 'u', 'ủ': 'u', 'ũ': 'u', 'ư': 'u', 'ừ': 'u',
+    'ứ': 'u', 'ự': 'u', 'ử': 'u', 'ữ': 'u', 'ỳ': 'y', 'ỵ': 'y', 'ỷ': 'y',
+    'ỹ': 'y', 'đ': 'd',
+    // currency
+    '€': 'euro', '₢': 'cruzeiro', '₣': 'french franc', '£': 'pound',
+    '₤': 'lira', '₥': 'mill', '₦': 'naira', '₧': 'peseta', '₨': 'rupee',
+    '₩': 'won', '₪': 'new shequel', '₫': 'dong', '₭': 'kip', '₮': 'tugrik',
+    '₯': 'drachma', '₰': 'penny', '₱': 'peso', '₲': 'guarani', '₳': 'austral',
+    '₴': 'hryvnia', '₵': 'cedi', '¢': 'cent', '¥': 'yen', '元': 'yuan',
+    '円': 'yen', '﷼': 'rial', '₠': 'ecu', '¤': 'currency', '฿': 'baht',
+    "$": 'dollar', '₹': 'indian rupee',
+    // symbols
+    '©':'(c)', 'œ': 'oe', 'Œ': 'OE', '∑': 'sum', '®': '(r)', '†': '+',
+    '“': '"', '”': '"', '‘': "'", '’': "'", '∂': 'd', 'ƒ': 'f', '™': 'tm',
+    '℠': 'sm', '…': '...', '˚': 'o', 'º': 'o', 'ª': 'a', '•': '*',
+    '∆': 'delta', '∞': 'infinity', '♥': 'love', '&': 'and', '|': 'or',
+    '<': 'less', '>': 'greater',
+};
+
+slug.defaults.modes = {
+    rfc3986: {
+        replacement: '-',
+        symbols: true,
+        remove: null,
+        lower: true,
+        charmap: slug.defaults.charmap,
+        multicharmap: slug.defaults.multicharmap,
+    },
+    pretty: {
+        replacement: '-',
+        symbols: true,
+        remove: /[.]/g,
+        lower: false,
+        charmap: slug.defaults.charmap,
+        multicharmap: slug.defaults.multicharmap,
+    },
+};
+
+// Be compatible with different module systems
+
+if (true) { // AMD
+    // dont load symbols table in the browser
+    for (var key in slug.defaults.modes) {
+        if (!slug.defaults.modes.hasOwnProperty(key))
+            continue;
+
+        slug.defaults.modes[key].symbols = false;
+    }
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {return slug}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else if (typeof module !== 'undefined' && module.exports) { // CommonJS
+    symbols(); // preload symbols table
+    module.exports = slug;
+} else { // Script tag
+    // dont load symbols table in the browser
+    for (var key in slug.defaults.modes) {
+        if (!slug.defaults.modes.hasOwnProperty(key))
+            continue;
+
+        slug.defaults.modes[key].symbols = false;
+    }
+    root.slug = slug;
+}
+
+}(this));
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = window.$ = window.jQuery = __webpack_require__(0);
-var View = __webpack_require__(2);
-var slug = __webpack_require__(6);
-var shuffleArray = __webpack_require__(5);
-
-__webpack_require__(1);
-__webpack_require__(7);
+var $ = __webpack_require__(0);
+var View = __webpack_require__(1);
+var BaseController = __webpack_require__(2);
+var AttireUserRepositories = __webpack_require__(3);
+var slug = __webpack_require__(12);
 
 var AttireController;
 var AttireNavigation;
-var AttireUserRepositories;
 
-AttireController = View.extend({
+AttireController = BaseController.extend({
 
     initialize: function() {
 
@@ -13265,45 +13401,6 @@ AttireController = View.extend({
         this.setupCodeHighlight();
         this.setupAttireQueue();
         this.mapView('.attireUserRepositories', AttireUserRepositories);
-
-    },
-
-    setupCodeHighlight: function() {
-
-        var Prism = __webpack_require__(4);
-
-        __webpack_require__(3);
-
-        Prism.plugins.NormalizeWhitespace.setDefaults({
-            'remove-trailing': true,
-            'remove-indent': true,
-            'left-trim': true,
-            'right-trim': true
-        });
-
-        Prism.highlightAll();
-
-        $('.attireCodeToggleBlock').on('click', '.attireCodeToggleBtn', function(e) {
-
-            $(e.delegateTarget).toggleClass('isActive');
-
-        });
-
-    },
-
-    setupAttireQueue: function() {
-
-        if (window.attireQueue && window.attireQueue.length) {
-            $.each(window.attireQueue, function(i, callback) {
-                callback($);
-            });
-        }
-
-        window.attireQueue = {
-            push: function(callback) {
-                callback($);
-            }
-        };
 
     }
 
@@ -13356,82 +13453,6 @@ AttireNavigation = View.extend({
         });
 
         return $navElement.prependTo('body');
-
-    }
-
-});
-
-AttireUserRepositories = View.extend({
-
-    initialize: function() {
-
-        this.options = $.extend({}, this.$el.data());
-
-        this.$el.html('<p class="loader">Loading...</p>');
-
-        this.$el.whenInViewport(function() {
-
-            this.loadRepos(function(repositories) {
-
-                this.render(this.options.user, shuffleArray(repositories).slice(0, 3));
-
-            });
-
-        }, {threshold: 1000, context: this});
-
-    },
-
-    loadRepos: function(callback) {
-
-        var options = this.options;
-        var self = this;
-
-        $.get('https://api.github.com/users/' + options.user + '/repos', function(response) {
-
-            var currentRepoUrl = $('link[rel="canonical"]').attr('href');
-            var currentRepoName = currentRepoUrl ? $.map(currentRepoUrl.split('/'), function(part) {
-                return part ? part : undefined;
-            }).slice(-1)[0] : undefined;
-
-            var repositories = $.map(response, function(repo) {
-
-                var includeRepo =
-                    (options.onlyWithPages ? repo.has_pages : true) &&
-                    (options.excludeRepo ? options.excludeRepo.split(',').indexOf(repo.name) < 0 : true) &&
-                    (currentRepoName ? currentRepoName !== repo.name : true);
-
-                return includeRepo ? {
-                    title: repo.name,
-                    description: repo.description,
-                    url: repo.homepage || repo.html_url
-                } : undefined;
-            });
-
-            callback && callback.call(self, repositories);
-
-        });
-
-    },
-
-    render: function(userName, repositories) {
-
-        var $list = $('<ul />');
-
-        $.each(repositories, function(i, repo) {
-            $list.append(
-                '<li>' +
-                    '<a class="attireUserRepo" href="' + repo.url + '">' +
-                        '<h3 class="title">' + repo.title + '</h3>' +
-                        '<p class="description">' + repo.description + '</p>' +
-                    '</a>' +
-                '</li>'
-            );
-        });
-
-        this.$el
-            .empty()
-            .append('<h2 class="title">More from ' + userName + '</h2>')
-            .append($list);
 
     }
 
