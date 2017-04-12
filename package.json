@@ -48,6 +48,7 @@
     "prismjs": "^1.6.0",
     "shuffle-array": "^1.0.1",
     "slug": "^0.9.1",
+    "throttle-debounce": "^1.0.1",
     "webpack": "^2.2.1",
     "when-in-viewport": "^2.0.2"
   }

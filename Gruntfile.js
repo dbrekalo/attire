@@ -181,6 +181,6 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['eslint', 'googlefonts', 'sass', 'sync', 'buildDemo']);
+    grunt.registerTask('build', ['eslint', 'googlefonts', 'sass', 'sync', 'buildDemo', 'buildDocs']);
 
 };

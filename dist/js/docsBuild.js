@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11089,7 +11089,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     /* istanbul ignore next */
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6), __webpack_require__(5), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7), __webpack_require__(6), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11344,16 +11344,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var $ = window.$ = window.jQuery = __webpack_require__(0);
 var View = __webpack_require__(1);
 
+__webpack_require__(5);
 __webpack_require__(4);
-__webpack_require__(11);
 
 module.exports = View.extend({
 
     setupCodeHighlight: function() {
 
-        var Prism = __webpack_require__(8);
+        var Prism = __webpack_require__(9);
 
-        __webpack_require__(7);
+        __webpack_require__(8);
 
         Prism.plugins.NormalizeWhitespace.setDefaults({
             'remove-trailing': true,
@@ -11397,7 +11397,7 @@ module.exports = View.extend({
 
 var $ = __webpack_require__(0);
 var View = __webpack_require__(1);
-var shuffleArray = __webpack_require__(9);
+var shuffleArray = __webpack_require__(10);
 
 module.exports = View.extend({
 
@@ -11478,6 +11478,322 @@ module.exports = View.extend({
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
+
+    /* istanbul ignore next */
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.WhenInViewport = factory();
+    }
+
+}(this, function() {
+
+    var windowHeight;
+    var scrollOffset;
+
+    function WhenInViewport(element, callback, options) {
+
+        events.setup();
+        this.registryItem = registry.addItem(element, typeof callback === 'function' ? assign(options || {}, {callback: callback}) : callback);
+        registry.processItem(this.registryItem);
+
+    }
+
+    WhenInViewport.prototype.stopListening = function() {
+
+        registry.removeItem(this.registryItem);
+        events.removeIfStoreEmpty();
+
+    };
+
+    WhenInViewport.defaults = {
+        threshold: 0,
+        context: null
+    };
+
+    assign(WhenInViewport, {
+
+        setRateLimiter: function(rateLimiter, rateLimitDelay) {
+
+            events.rateLimiter = rateLimiter;
+
+            if (rateLimitDelay) {
+                events.rateLimitDelay = rateLimitDelay;
+            }
+
+            return this;
+
+        },
+
+        checkAll: function() {
+
+            scrollOffset = getWindowScrollOffset();
+            windowHeight = getWindowHeight();
+
+            registry.adjustPositions(registry.processItem);
+            events.removeIfStoreEmpty();
+
+            return this;
+
+        },
+
+        destroy: function() {
+
+            registry.store = {};
+
+            events.remove();
+            delete events.scrollHandler;
+            delete events.resizeHandler;
+
+            return this;
+
+        },
+
+        registerAsJqueryPlugin: function($) {
+
+            $.fn.whenInViewport = function(options, moreOptions) {
+
+                var pluginOptions;
+                var callbackProxy = function(callback) {
+                    return function(el) { callback.call(this, $(el)); };
+                };
+
+                if (typeof options === 'function') {
+                    pluginOptions = $.extend({}, moreOptions, {callback: callbackProxy(options)});
+                } else {
+                    pluginOptions = $.extend(options, {callback: callbackProxy(options.callback)});
+                }
+
+                return this.each(function() {
+
+                    if (pluginOptions.setupOnce) {
+                        !$.data(this, 'whenInViewport') && $.data(this, 'whenInViewport', new WhenInViewport(this, pluginOptions));
+                    } else {
+                        $.data(this, 'whenInViewport', new WhenInViewport(this, pluginOptions));
+                    }
+
+                });
+
+            };
+
+            return this;
+
+        }
+
+    });
+
+    function getWindowHeight() {
+
+        /* istanbul ignore next */
+        return 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
+
+    }
+
+    function getWindowScrollOffset() {
+
+        /* istanbul ignore next */
+        return 'pageYOffset' in window ? window.pageYOffset : document.documentElement.scrollTop || document.body.scrollTop;
+
+    }
+
+    function getElementOffset(element) {
+
+        return element.getBoundingClientRect().top + getWindowScrollOffset();
+
+    }
+
+    function iterate(obj, callback, context) {
+
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (callback.call(context, obj[key], key) === false) {
+                    break;
+                }
+            }
+        }
+
+    }
+
+    function assign(out) {
+
+        for (var i = 1; i < arguments.length; i++) {
+            iterate(arguments[i], function(obj, key) {
+                out[key] = obj;
+            });
+        }
+
+        return out;
+
+    }
+
+    var registry = {
+
+        store: {},
+        counter: 0,
+
+        addItem: function(element, options) {
+
+            var storeKey = 'whenInViewport' + (++this.counter);
+            var item = assign({}, WhenInViewport.defaults, options, {
+                storeKey: storeKey,
+                element: element,
+                topOffset: getElementOffset(element)
+            });
+
+            return this.store[storeKey] = item;
+
+        },
+
+        adjustPositions: function(callback) {
+
+            iterate(this.store, function(storeItem) {
+                storeItem.topOffset = getElementOffset(storeItem.element);
+                callback && callback.call(registry, storeItem);
+            });
+
+        },
+
+        processAll: function() {
+
+            iterate(this.store, this.processItem, this);
+
+        },
+
+        processItem: function(item) {
+
+            if (scrollOffset + windowHeight >= item.topOffset - item.threshold) {
+
+                this.removeItem(item);
+                item.callback.call(item.context || window, item.element);
+
+            }
+
+        },
+
+        removeItem: function(registryItem) {
+
+            delete this.store[registryItem.storeKey];
+
+        },
+
+        isEmpty: function() {
+
+            var isEmpty = true;
+
+            iterate(this.store, function() {
+                return isEmpty = false;
+            });
+
+            return isEmpty;
+
+        }
+
+    };
+
+    var events = {
+
+        setuped: false,
+
+        rateLimiter: function(callback, timeout) {
+            return callback;
+        },
+
+        rateLimitDelay: 100,
+
+        on: function(eventName, callback) {
+
+            /* istanbul ignore next */
+            if (window.addEventListener) {
+                window.addEventListener(eventName, callback, false);
+            } else if (window.attachEvent) {
+                window.attachEvent(eventName, callback);
+            }
+
+            return this;
+
+        },
+
+        off: function(eventName, callback) {
+
+            /* istanbul ignore next */
+            if (window.removeEventListener) {
+                window.removeEventListener(eventName, callback, false);
+            } else if (window.detachEvent) {
+                window.detachEvent('on' + eventName, callback);
+            }
+
+            return this;
+
+        },
+
+        setup: function() {
+
+            var self = this;
+
+            if (!this.setuped) {
+
+                scrollOffset = getWindowScrollOffset();
+                windowHeight = getWindowHeight();
+
+                this.scrollHandler = this.scrollHandler || this.rateLimiter(function() {
+
+                    scrollOffset = getWindowScrollOffset();
+                    registry.processAll();
+                    self.removeIfStoreEmpty();
+
+                }, this.rateLimitDelay);
+
+                this.resizeHandler = this.resizeHandler || this.rateLimiter(function() {
+
+                    windowHeight = getWindowHeight();
+                    registry.adjustPositions(registry.processItem);
+                    self.removeIfStoreEmpty();
+
+                }, this.rateLimitDelay);
+
+                this.on('scroll', this.scrollHandler).on('resize', this.resizeHandler);
+
+                this.setuped = true;
+
+            }
+
+        },
+
+        removeIfStoreEmpty: function() {
+
+            registry.isEmpty() && this.remove();
+
+        },
+
+        remove: function() {
+
+            if (this.setuped) {
+                this.off('scroll', this.scrollHandler).off('resize', this.resizeHandler);
+                this.setuped = false;
+            }
+
+        }
+
+    };
+
+    var $ = window.jQuery || window.$;
+    $ && WhenInViewport.registerAsJqueryPlugin($);
+
+    return WhenInViewport;
+
+}));
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 // Console-polyfill. MIT license.
@@ -11502,7 +11818,7 @@ module.exports = View.extend({
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
@@ -11677,7 +11993,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
@@ -11751,7 +12067,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -11928,7 +12244,7 @@ Prism.hooks.add('before-sanity-check', function (env) {
 }());
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -12727,10 +13043,10 @@ Prism.languages.js = Prism.languages.javascript;
 
 })();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12819,7 +13135,7 @@ module.exports = shuffle;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 var g;
@@ -12843,322 +13159,6 @@ try {
 // easier to handle this case. if(!global) { ...}
 
 module.exports = g;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-
-    /* istanbul ignore next */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        root.WhenInViewport = factory();
-    }
-
-}(this, function() {
-
-    var windowHeight;
-    var scrollOffset;
-
-    function WhenInViewport(element, callback, options) {
-
-        events.setup();
-        this.registryItem = registry.addItem(element, typeof callback === 'function' ? assign(options || {}, {callback: callback}) : callback);
-        registry.processItem(this.registryItem);
-
-    }
-
-    WhenInViewport.prototype.stopListening = function() {
-
-        registry.removeItem(this.registryItem);
-        events.removeIfStoreEmpty();
-
-    };
-
-    WhenInViewport.defaults = {
-        threshold: 0,
-        context: null
-    };
-
-    assign(WhenInViewport, {
-
-        setRateLimiter: function(rateLimiter, rateLimitDelay) {
-
-            events.rateLimiter = rateLimiter;
-
-            if (rateLimitDelay) {
-                events.rateLimitDelay = rateLimitDelay;
-            }
-
-            return this;
-
-        },
-
-        checkAll: function() {
-
-            scrollOffset = getWindowScrollOffset();
-            windowHeight = getWindowHeight();
-
-            registry.adjustPositions(registry.processItem);
-            events.removeIfStoreEmpty();
-
-            return this;
-
-        },
-
-        destroy: function() {
-
-            registry.store = {};
-
-            events.remove();
-            delete events.scrollHandler;
-            delete events.resizeHandler;
-
-            return this;
-
-        },
-
-        registerAsJqueryPlugin: function($) {
-
-            $.fn.whenInViewport = function(options, moreOptions) {
-
-                var pluginOptions;
-                var callbackProxy = function(callback) {
-                    return function(el) { callback.call(this, $(el)); };
-                };
-
-                if (typeof options === 'function') {
-                    pluginOptions = $.extend({}, moreOptions, {callback: callbackProxy(options)});
-                } else {
-                    pluginOptions = $.extend(options, {callback: callbackProxy(options.callback)});
-                }
-
-                return this.each(function() {
-
-                    if (pluginOptions.setupOnce) {
-                        !$.data(this, 'whenInViewport') && $.data(this, 'whenInViewport', new WhenInViewport(this, pluginOptions));
-                    } else {
-                        $.data(this, 'whenInViewport', new WhenInViewport(this, pluginOptions));
-                    }
-
-                });
-
-            };
-
-            return this;
-
-        }
-
-    });
-
-    function getWindowHeight() {
-
-        /* istanbul ignore next */
-        return 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
-
-    }
-
-    function getWindowScrollOffset() {
-
-        /* istanbul ignore next */
-        return 'pageYOffset' in window ? window.pageYOffset : document.documentElement.scrollTop || document.body.scrollTop;
-
-    }
-
-    function getElementOffset(element) {
-
-        return element.getBoundingClientRect().top + getWindowScrollOffset();
-
-    }
-
-    function iterate(obj, callback, context) {
-
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (callback.call(context, obj[key], key) === false) {
-                    break;
-                }
-            }
-        }
-
-    }
-
-    function assign(out) {
-
-        for (var i = 1; i < arguments.length; i++) {
-            iterate(arguments[i], function(obj, key) {
-                out[key] = obj;
-            });
-        }
-
-        return out;
-
-    }
-
-    var registry = {
-
-        store: {},
-        counter: 0,
-
-        addItem: function(element, options) {
-
-            var storeKey = 'whenInViewport' + (++this.counter);
-            var item = assign({}, WhenInViewport.defaults, options, {
-                storeKey: storeKey,
-                element: element,
-                topOffset: getElementOffset(element)
-            });
-
-            return this.store[storeKey] = item;
-
-        },
-
-        adjustPositions: function(callback) {
-
-            iterate(this.store, function(storeItem) {
-                storeItem.topOffset = getElementOffset(storeItem.element);
-                callback && callback.call(registry, storeItem);
-            });
-
-        },
-
-        processAll: function() {
-
-            iterate(this.store, this.processItem, this);
-
-        },
-
-        processItem: function(item) {
-
-            if (scrollOffset + windowHeight >= item.topOffset - item.threshold) {
-
-                this.removeItem(item);
-                item.callback.call(item.context || window, item.element);
-
-            }
-
-        },
-
-        removeItem: function(registryItem) {
-
-            delete this.store[registryItem.storeKey];
-
-        },
-
-        isEmpty: function() {
-
-            var isEmpty = true;
-
-            iterate(this.store, function() {
-                return isEmpty = false;
-            });
-
-            return isEmpty;
-
-        }
-
-    };
-
-    var events = {
-
-        setuped: false,
-
-        rateLimiter: function(callback, timeout) {
-            return callback;
-        },
-
-        rateLimitDelay: 100,
-
-        on: function(eventName, callback) {
-
-            /* istanbul ignore next */
-            if (window.addEventListener) {
-                window.addEventListener(eventName, callback, false);
-            } else if (window.attachEvent) {
-                window.attachEvent(eventName, callback);
-            }
-
-            return this;
-
-        },
-
-        off: function(eventName, callback) {
-
-            /* istanbul ignore next */
-            if (window.removeEventListener) {
-                window.removeEventListener(eventName, callback, false);
-            } else if (window.detachEvent) {
-                window.detachEvent('on' + eventName, callback);
-            }
-
-            return this;
-
-        },
-
-        setup: function() {
-
-            var self = this;
-
-            if (!this.setuped) {
-
-                scrollOffset = getWindowScrollOffset();
-                windowHeight = getWindowHeight();
-
-                this.scrollHandler = this.scrollHandler || this.rateLimiter(function() {
-
-                    scrollOffset = getWindowScrollOffset();
-                    registry.processAll();
-                    self.removeIfStoreEmpty();
-
-                }, this.rateLimitDelay);
-
-                this.resizeHandler = this.resizeHandler || this.rateLimiter(function() {
-
-                    windowHeight = getWindowHeight();
-                    registry.adjustPositions(registry.processItem);
-                    self.removeIfStoreEmpty();
-
-                }, this.rateLimitDelay);
-
-                this.on('scroll', this.scrollHandler).on('resize', this.resizeHandler);
-
-                this.setuped = true;
-
-            }
-
-        },
-
-        removeIfStoreEmpty: function() {
-
-            registry.isEmpty() && this.remove();
-
-        },
-
-        remove: function() {
-
-            if (this.setuped) {
-                this.off('scroll', this.scrollHandler).off('resize', this.resizeHandler);
-                this.setuped = false;
-            }
-
-        }
-
-    };
-
-    var $ = window.jQuery || window.$;
-    $ && WhenInViewport.registerAsJqueryPlugin($);
-
-    return WhenInViewport;
-
-}));
 
 
 /***/ }),
@@ -15549,6 +15549,103 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! nanoScroller
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports) {
+
+/* eslint-disable no-undefined,no-param-reassign,no-shadow */
+
+/**
+ * Throttle execution of a function. Especially useful for rate limiting
+ * execution of handlers on events like resize and scroll.
+ *
+ * @param  {Number}    delay          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
+ * @param  {Boolean}   noTrailing     Optional, defaults to false. If noTrailing is true, callback will only execute every `delay` milliseconds while the
+ *                                    throttled-function is being called. If noTrailing is false or unspecified, callback will be executed one final time
+ *                                    after the last throttled-function call. (After the throttled-function has not been called for `delay` milliseconds,
+ *                                    the internal counter is reset)
+ * @param  {Function}  callback       A function to be executed after delay milliseconds. The `this` context and all arguments are passed through, as-is,
+ *                                    to `callback` when the throttled-function is executed.
+ * @param  {Boolean}   debounceMode   If `debounceMode` is true (at begin), schedule `clear` to execute after `delay` ms. If `debounceMode` is false (at end),
+ *                                    schedule `callback` to execute after `delay` ms.
+ *
+ * @return {Function}  A new, throttled, function.
+ */
+module.exports = function ( delay, noTrailing, callback, debounceMode ) {
+
+	// After wrapper has stopped being called, this timeout ensures that
+	// `callback` is executed at the proper times in `throttle` and `end`
+	// debounce modes.
+	var timeoutID;
+
+	// Keep track of the last time `callback` was executed.
+	var lastExec = 0;
+
+	// `noTrailing` defaults to falsy.
+	if ( typeof noTrailing !== 'boolean' ) {
+		debounceMode = callback;
+		callback = noTrailing;
+		noTrailing = undefined;
+	}
+
+	// The `wrapper` function encapsulates all of the throttling / debouncing
+	// functionality and when executed will limit the rate at which `callback`
+	// is executed.
+	function wrapper () {
+
+		var self = this;
+		var elapsed = Number(new Date()) - lastExec;
+		var args = arguments;
+
+		// Execute `callback` and update the `lastExec` timestamp.
+		function exec () {
+			lastExec = Number(new Date());
+			callback.apply(self, args);
+		}
+
+		// If `debounceMode` is true (at begin) this is used to clear the flag
+		// to allow future `callback` executions.
+		function clear () {
+			timeoutID = undefined;
+		}
+
+		if ( debounceMode && !timeoutID ) {
+			// Since `wrapper` is being called for the first time and
+			// `debounceMode` is true (at begin), execute `callback`.
+			exec();
+		}
+
+		// Clear any existing timeout.
+		if ( timeoutID ) {
+			clearTimeout(timeoutID);
+		}
+
+		if ( debounceMode === undefined && elapsed > delay ) {
+			// In throttle mode, if `delay` time has been exceeded, execute
+			// `callback`.
+			exec();
+
+		} else if ( noTrailing !== true ) {
+			// In trailing throttle mode, since `delay` time has not been
+			// exceeded, schedule `callback` to execute `delay` ms after most
+			// recent execution.
+			//
+			// If `debounceMode` is true (at begin), schedule `clear` to execute
+			// after `delay` ms.
+			//
+			// If `debounceMode` is false (at end), schedule `callback` to
+			// execute after `delay` ms.
+			timeoutID = setTimeout(debounceMode ? clear : exec, debounceMode === undefined ? delay - elapsed : delay);
+		}
+
+	}
+
+	// Return the wrapper function.
+	return wrapper;
+
+};
+
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $ = __webpack_require__(0);
@@ -15556,6 +15653,8 @@ var View = __webpack_require__(1);
 var BaseController = __webpack_require__(2);
 var AttireUserRepositories = __webpack_require__(3);
 var Fuse = __webpack_require__(15);
+var WhenInViewport = __webpack_require__(4);
+var throttle = __webpack_require__(17);
 
 __webpack_require__(14);
 __webpack_require__(16);
@@ -15605,6 +15704,8 @@ AttireNavigation = View.extend({
         this.currentPageSlug = $('.attireArticle').data('slug');
         this.$navElements = this.$('.docLink');
 
+        this.connectNav = throttle(250, $.proxy(this.connectNav, this));
+
         this.buildNavRegistry();
         this.connectNav();
 
@@ -15648,8 +15749,10 @@ AttireNavigation = View.extend({
         $.each(self.navRegistry, function(index, item) {
 
             if (currentScrollPosition < item.offset) {
+
                 self.$navElements.removeClass('selected');
                 item.$navElement.addClass('selected');
+
                 return false;
             }
 
@@ -15717,6 +15820,8 @@ AttireNavigation = View.extend({
                 self.options.onPageChange();
             }
 
+            WhenInViewport.checkAll();
+
         });
 
     },
@@ -15745,7 +15850,7 @@ AttireNavigation = View.extend({
     scrollTo: function($element) {
 
         $('html, body').animate({
-            scrollTop: $element instanceof $ ? $element.offset().top - 60 : $element
+            scrollTop: $element instanceof $ ? $element.offset().top - 100 : $element
         }, 300);
 
     },

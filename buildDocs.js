@@ -98,14 +98,19 @@ module.exports = function(userOptions) {
         minifyHtml: true,
         inlineCss: false,
         baseUrl: '',
-        // assetDistPath: 'https://rawgit.com/dbrekalo/attire/master/dist/',
-        assetDistPath: '../dist/',
+        assetDistPath: 'https://cdn.rawgit.com/dbrekalo/attire/master/dist/',
+        // assetDistPath: '../dist/',
         githubUrl: undefined,
         userRepositories: undefined
     }, userOptions);
 
-    options.cssFiles = [options.inlineCss ? path.resolve(__dirname, 'dist/css/docsBuild.css') : options.assetDistPath + 'css/docsBuild.css'].concat(options.cssFiles);
-    options.jsFiles = [options.assetDistPath + 'js/docsBuild.js'].concat(options.jsFiles);
+    options.cssFiles = [
+        options.inlineCss ? path.resolve(__dirname, 'dist/css/docsBuild.css') : options.assetDistPath + 'css/docsBuild.min.css'
+    ].concat(options.cssFiles);
+
+    options.jsFiles = [
+        options.assetDistPath + 'js/docsBuild.min.js'
+    ].concat(options.jsFiles);
 
     if (options.inlineCss) {
         options.cssFiles = options.cssFiles.map(function(cssFile) {

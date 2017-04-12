@@ -3,6 +3,8 @@ var View = require('jquery-simple-view');
 var BaseController = require('../common/baseController');
 var AttireUserRepositories = require('../common/userRepositories');
 var Fuse = require('fuse.js');
+var WhenInViewport = require('when-in-viewport');
+var throttle = require('throttle-debounce/throttle');
 
 require('fastsearch');
 require('nanoscroller');
@@ -52,6 +54,8 @@ AttireNavigation = View.extend({
         this.currentPageSlug = $('.attireArticle').data('slug');
         this.$navElements = this.$('.docLink');
 
+        this.connectNav = throttle(250, $.proxy(this.connectNav, this));
+
         this.buildNavRegistry();
         this.connectNav();
 
@@ -95,8 +99,10 @@ AttireNavigation = View.extend({
         $.each(self.navRegistry, function(index, item) {
 
             if (currentScrollPosition < item.offset) {
+
                 self.$navElements.removeClass('selected');
                 item.$navElement.addClass('selected');
+
                 return false;
             }
 
@@ -164,6 +170,8 @@ AttireNavigation = View.extend({
                 self.options.onPageChange();
             }
 
+            WhenInViewport.checkAll();
+
         });
 
     },
@@ -192,7 +200,7 @@ AttireNavigation = View.extend({
     scrollTo: function($element) {
 
         $('html, body').animate({
-            scrollTop: $element instanceof $ ? $element.offset().top - 60 : $element
+            scrollTop: $element instanceof $ ? $element.offset().top - 100 : $element
         }, 300);
 
     },

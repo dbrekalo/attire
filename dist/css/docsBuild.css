@@ -922,7 +922,7 @@ a {
   font-size: 1.5em;
   right: 0;
   top: 1.2em;
-  opacity: 0.5;
+  color: darkgray;
 }
 
 .attireSearch > input {
@@ -932,6 +932,23 @@ a {
   padding: 0.625em 0.625em;
   background: transparent;
   border: 0;
+  color: #303030;
+}
+
+.attireSearch > input::-webkit-input-placeholder {
+  color: darkgray;
+}
+
+.attireSearch > input::-moz-placeholder {
+  color: darkgray;
+}
+
+.attireSearch > input:-moz-placeholder {
+  color: darkgray;
+}
+
+.attireSearch > input:-ms-input-placeholder {
+  color: darkgray;
 }
 
 .attireSearch.fsr_opened {
@@ -1081,11 +1098,13 @@ a {
     right: 0;
     z-index: 30;
     width: 28em;
-    padding-top: 3.5em;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     background-color: #FFF;
+  }
+  .attireNav > .panel > .content {
+    padding: 3.5em 0 1em;
   }
   .attireNav > .panel > .content > a {
     font-family: Lato, Arial, sans-serif;

@@ -27,14 +27,18 @@
     &:before {
 
         left: auto; font-size: 1.5em; right: 0; top: em(18,15);
-        opacity: 0.5;
+        color: darken(#f5f5f5, 30%);
 
     }
 
     > input {
 
         display: block; width: 100%; font-size: 1.6em; padding: em(10,16) em(10,16);
-        background: transparent; border: 0;
+        background: transparent; border: 0; color: $colorGrayDark1;
+
+        @include placeholder {
+            color: darken(#f5f5f5, 30%);
+        }
 
     }
 

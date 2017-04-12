@@ -54,11 +54,13 @@
             @include transform(translate3d(28em, 0, 0));
 
             position: fixed; top: 0; bottom: 0; right: 0; z-index: 30;
-            width: 28em; padding-top: 3.5em;
+            width: 28em;
             overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
             background-color: #FFF;
 
             > .content {
+
+                padding: 3.5em 0 1em;
 
                 > a {
 
