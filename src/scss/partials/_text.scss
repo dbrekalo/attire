@@ -50,7 +50,7 @@
 
 .attireTextType2 {
 
-    font-size: 1.8em; padding: 0; margin: 0 0 em(20,16);
+    font-size: 1.8em; padding: 0; margin: 0 0 em(20,18);
     color: $colorGrayDark2; line-height: 1.6;
 
 }
@@ -64,9 +64,11 @@
 
 .attireListType1 {
 
-    > li {
+    margin-bottom: 2em;
 
-        font-size: 1.8em; padding-left: em(30,18); margin: em(10,18) 0; position: relative;
+    li {
+
+        font-size: 1.7em; padding-left: em(30,17); margin: em(10,17) 0; position: relative;
         color: $colorGrayDark2; line-height: 1.6;
 
         &:before {

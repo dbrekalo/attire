@@ -210,11 +210,21 @@ AttireNavigation = View.extend({
         return this.$navElements.map(function(i, navEl) {
 
             var $navEl = $(navEl);
+            var sectionText;
+            var text = $navEl.text();
+            var html = text;
+
+            if ($navEl.parent().is('li')) {
+                sectionText = $navEl.closest('ul').prev().text();
+                text += ' ' + sectionText;
+                html += ' <span>' + sectionText + '</span>';
+            }
 
             return {
                 url: $navEl.attr('href'),
                 pointer: $navEl.data('pointer'),
-                caption: $navEl.text()
+                text: text,
+                html: html
             };
 
         }).get();
@@ -267,11 +277,11 @@ AttireSearch = View.extend({
         var self = this;
         var $input = this.$('input');
         var Fastsearch = $.fastsearch;
-        var fuse = new Fuse(self.options.getSearchableItems(), {keys: ['caption'], threshold: 0.4});
+        var fuse = new Fuse(self.options.getSearchableItems(), {keys: ['text'], threshold: 0.4});
 
         var fastsearch = new Fastsearch($input, {
             wrapSelector: '.attireSearch',
-            responseFormat: {label: 'caption'},
+            responseFormat: {label: 'html'},
             typeTimeout: 0,
             focusFirstItem: true,
             preventSubmit: true,

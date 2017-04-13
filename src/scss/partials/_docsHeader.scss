@@ -77,6 +77,14 @@
         display: block; font-size: 1.4em; line-height: 1.4; padding: em(5,14) em(10,14);
         color: $colorGrayDark1;
 
+        > span {
+
+            opacity: 0.5;
+
+            &:before { content: "– "; }
+
+        }
+
         &.focused {
 
             color: $colorMain1;

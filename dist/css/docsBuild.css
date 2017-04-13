@@ -991,6 +991,14 @@ a {
   color: #303030;
 }
 
+.attireSearch .fs_result_item > span, .attireSearch .fs_no_results > span {
+  opacity: 0.5;
+}
+
+.attireSearch .fs_result_item > span:before, .attireSearch .fs_no_results > span:before {
+  content: "– ";
+}
+
 .attireSearch .fs_result_item.focused, .attireSearch .fs_no_results.focused {
   color: #2B91F5;
 }
@@ -1477,7 +1485,7 @@ a {
 .attireTextType2 {
   font-size: 1.8em;
   padding: 0;
-  margin: 0 0 1.25em;
+  margin: 0 0 1.11111em;
   color: #636363;
   line-height: 1.6;
 }
@@ -1490,16 +1498,20 @@ a {
   line-height: 1.6;
 }
 
-.attireListType1 > li {
-  font-size: 1.8em;
-  padding-left: 1.66667em;
-  margin: 0.55556em 0;
+.attireListType1 {
+  margin-bottom: 2em;
+}
+
+.attireListType1 li {
+  font-size: 1.7em;
+  padding-left: 1.76471em;
+  margin: 0.58824em 0;
   position: relative;
   color: #636363;
   line-height: 1.6;
 }
 
-.attireListType1 > li:before {
+.attireListType1 li:before {
   content: "—";
   position: absolute;
   left: 0;
