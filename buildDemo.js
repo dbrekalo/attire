@@ -113,7 +113,7 @@ module.exports = function(userOptions) {
         cssFiles: [],
         minifyHtml: true,
         inlineCss: false,
-        assetDistPath: 'https://rawgit.com/dbrekalo/attire/master/dist/'
+        assetDistPath: 'https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/'
     }, userOptions);
 
     options.cssFiles = [options.inlineCss ? path.resolve(__dirname, 'dist/css/demoBuild.min.css') : options.assetDistPath + 'css/demoBuild.min.css'].concat(options.cssFiles);

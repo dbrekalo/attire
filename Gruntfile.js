@@ -68,7 +68,7 @@ module.exports = function(grunt) {
                 options: {
                     fontPath: 'src/fonts/webFont',
                     cssFile: 'src/scss/partials/_webFonts.scss',
-                    httpPath: 'https://rawgit.com/dbrekalo/attire/master/dist/fonts/',
+                    httpPath: 'https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/',
                     formats: {eot: true, ttf: true, woff: true, woff2: true, svg: true},
                     fonts: [{
                         family: 'Lato',

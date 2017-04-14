@@ -1,8 +1,8 @@
 var $ = window.$ = window.jQuery = require('jquery');
 var View = require('jquery-simple-view');
+var WhenInViewport = require('when-in-viewport');
 
 require('console-polyfill');
-require('when-in-viewport');
 
 module.exports = View.extend({
 
@@ -24,6 +24,7 @@ module.exports = View.extend({
         $('.attireCodeToggleBlock').on('click', '.attireCodeToggleBtn', function(e) {
 
             $(e.delegateTarget).toggleClass('isActive');
+            WhenInViewport.checkAll();
 
         });
 

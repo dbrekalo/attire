@@ -652,32 +652,32 @@ pre[class*="language-"] {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
-  src: url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-300-normal.eot);
-  src: local("Lato Light"), local("Lato-Light"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff2) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-300-normal.ttf) format("truetype"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-300-normal.svg#Lato) format("svg");
+  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.eot);
+  src: local("Lato Light"), local("Lato-Light"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.svg#Lato) format("svg");
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-400-normal.eot);
-  src: local("Lato Regular"), local("Lato-Regular"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff2) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-400-normal.ttf) format("truetype"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-400-normal.svg#Lato) format("svg");
+  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.eot);
+  src: local("Lato Regular"), local("Lato-Regular"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.svg#Lato) format("svg");
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
-  src: url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-700-normal.eot);
-  src: local("Lato Bold"), local("Lato-Bold"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff2) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-700-normal.ttf) format("truetype"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-700-normal.svg#Lato) format("svg");
+  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.eot);
+  src: local("Lato Bold"), local("Lato-Bold"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.svg#Lato) format("svg");
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 900;
-  src: url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-900-normal.eot);
-  src: local("Lato Black"), local("Lato-Black"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff2) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff) format("woff"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-900-normal.ttf) format("truetype"), url(https://rawgit.com/dbrekalo/attire/master/dist/fonts/lato-900-normal.svg#Lato) format("svg");
+  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.eot);
+  src: local("Lato Black"), local("Lato-Black"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.svg#Lato) format("svg");
 }
 
 a {
@@ -740,8 +740,8 @@ body {
 
 @font-face {
   font-family: "attire";
-  src: url("https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons.eot?v1.0");
-  src: url("https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons.eot?v1.0#iefix") format("embedded-opentype"), url("https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons.woff?v1.0") format("woff"), url("https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons.ttf?v1.0") format("truetype"), url("https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons.svg?v1.0https://rawgit.com/dbrekalo/attire/master/dist/fonts/attireIcons") format("svg");
+  src: url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons.eot?v1.0");
+  src: url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons.eot?v1.0#iefix") format("embedded-opentype"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons.woff?v1.0") format("woff"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons.ttf?v1.0") format("truetype"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons.svg?v1.0https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/attireIcons") format("svg");
   font-weight: normal;
   font-style: normal;
 }

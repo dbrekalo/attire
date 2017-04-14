@@ -11343,9 +11343,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var $ = window.$ = window.jQuery = __webpack_require__(0);
 var View = __webpack_require__(1);
+var WhenInViewport = __webpack_require__(4);
 
 __webpack_require__(5);
-__webpack_require__(4);
 
 module.exports = View.extend({
 
@@ -11367,6 +11367,7 @@ module.exports = View.extend({
         $('.attireCodeToggleBlock').on('click', '.attireCodeToggleBtn', function(e) {
 
             $(e.delegateTarget).toggleClass('isActive');
+            WhenInViewport.checkAll();
 
         });
 

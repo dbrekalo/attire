@@ -98,7 +98,7 @@ module.exports = function(userOptions) {
         minifyHtml: true,
         inlineCss: false,
         baseUrl: '',
-        assetDistPath: 'https://cdn.rawgit.com/dbrekalo/attire/master/dist/',
+        assetDistPath: 'https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/',
         // assetDistPath: '../dist/',
         githubUrl: undefined,
         userRepositories: undefined
