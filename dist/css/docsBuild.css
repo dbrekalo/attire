@@ -652,32 +652,64 @@ pre[class*="language-"] {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
-  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.eot);
-  src: local("Lato Light"), local("Lato-Light"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal.svg#Lato) format("svg");
+  src: local("Lato Light"), local("Lato-Light"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Lato Light"), local("Lato-Light"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-300-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.eot);
-  src: local("Lato Regular"), local("Lato-Regular"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal.svg#Lato) format("svg");
+  src: local("Lato Regular"), local("Lato-Regular"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-400-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
-  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.eot);
-  src: local("Lato Bold"), local("Lato-Bold"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal.svg#Lato) format("svg");
+  src: local("Lato Bold"), local("Lato-Bold"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-700-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 900;
-  src: url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.eot);
-  src: local("Lato Black"), local("Lato-Black"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff2) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.woff) format("woff"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.ttf) format("truetype"), url(https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal.svg#Lato) format("svg");
+  src: local("Lato Black"), local("Lato-Black"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+  src: local("Lato Black"), local("Lato-Black"), url("https://gitcdn.xyz/repo/dbrekalo/attire/master/dist/fonts/lato-900-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
 a {

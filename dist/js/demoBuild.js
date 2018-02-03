@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -11089,7 +11089,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     /* istanbul ignore next */
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(7), __webpack_require__(6), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(10), __webpack_require__(6), __webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11101,32 +11101,39 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 }(this, function(typeFactory, mitty, $) {
 
-    var viewCounter = 0,
-        variableInEventStringRE = /{{(\S+)}}/g,
-        parseEventString = function(eventString, context) {
+    var viewCounter = 0;
+    var variableInEventStringRE = /{{(\S+)}}/g;
+    var parseEventVariables = function(eventString, context) {
 
-            return eventString.replace(variableInEventStringRE, function(match, namespace) {
+        return eventString.replace(variableInEventStringRE, function(match, namespace) {
 
-                var isInCurrentContext = namespace.indexOf('this.') === 0,
-                    current = isInCurrentContext ? context : window,
-                    pieces = (isInCurrentContext ? namespace.slice(5) : namespace).split('.');
+            var isInCurrentContext = namespace.indexOf('this.') === 0;
+            var current = isInCurrentContext ? context : window;
+            var pieces = (isInCurrentContext ? namespace.slice(5) : namespace).split('.');
 
-                for (var i in pieces) {
-                    current = current[pieces[i]];
-                    if (typeof current === 'undefined') {
-                        throw new Error('Undefined variable in event string');
-                    }
+            for (var i in pieces) {
+                current = current[pieces[i]];
+                if (typeof current === 'undefined') {
+                    throw new Error('Undefined variable in event string');
                 }
+            }
 
-                return current;
+            return current;
 
-            });
+        });
 
-        };
+    };
+
+    var specialSelectors = {
+        'document': window.document,
+        'window': window
+    };
 
     var View = typeFactory({
 
         delegatedEvents: true,
+        parseEventVariables: true,
+        assignOptions: false,
 
         constructor: function(options) {
 
@@ -11137,6 +11144,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 delete options.$el;
             }
 
+            if (this.assignOptions) {
+                var defaults = typeof this.defaults === 'function' ? this.defaults() : this.defaults;
+                this.options = this.assignOptions === 'deep' ? $.extend(true, {}, defaults, options) : $.extend({}, defaults, options);
+            }
+
             this.beforeInitialize && this.beforeInitialize.apply(this, arguments);
             this.initialize && this.initialize.apply(this, arguments);
 
@@ -11144,38 +11156,43 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         },
 
-        setupEvents: function() {
+        setupEvents: function(eventsMap) {
 
-            var eventNamespace = this.ens = this.ens || '.' + this.cid,
-                self = this,
-                specialSelectors = {
-                    'document': window.document,
-                    'window': window
-                };
+            var eventsProvider = eventsMap || this.events;
+            var eventList = typeof eventsProvider === 'function' ? eventsProvider.call(this) : eventsProvider;
+            var self = this;
 
-            $.each(typeof this.events === 'function' ? this.events() : this.events, function(eventString, handler) {
+            if (eventList) {
 
-                eventString = parseEventString(eventString, self);
+                var eventNamespace = this.ens = this.ens || '.' + this.cid;
 
-                var isOneEvent = eventString.indexOf('one:') === 0,
-                    splitEventString = (isOneEvent ? eventString.slice(4) : eventString).split(' '),
-                    eventName = splitEventString[0] + eventNamespace,
-                    eventSelector = splitEventString.slice(1).join(' '),
-                    $el = self.$el;
+                $.each(eventList, function(eventString, handler) {
 
-                if (specialSelectors[eventSelector]) {
-                    $el = self['$' + eventSelector] = self['$' + eventSelector] || $(specialSelectors[eventSelector]);
-                    eventSelector = undefined;
-                } else if (!self.delegatedEvents) {
-                    (self.elementsWithBoundEvents = self.elementsWithBoundEvents || []).push($el = $el.find(eventSelector));
-                    eventSelector = undefined;
-                }
+                    if (self.parseEventVariables) {
+                        eventString = parseEventVariables(eventString, self);
+                    }
 
-                $el[isOneEvent ? 'one' : 'on'](eventName, eventSelector, function() {
-                    (typeof handler === 'function' ? handler : self[handler]).apply(self, arguments);
+                    var isOneEvent = eventString.indexOf('one:') === 0;
+                    var splitEventString = (isOneEvent ? eventString.slice(4) : eventString).split(' ');
+                    var eventName = splitEventString[0] + eventNamespace;
+                    var eventSelector = splitEventString.slice(1).join(' ');
+                    var $el = self.$el;
+
+                    if (specialSelectors[eventSelector]) {
+                        $el = self['$' + eventSelector] = self['$' + eventSelector] || $(specialSelectors[eventSelector]);
+                        eventSelector = undefined;
+                    } else if (!self.delegatedEvents) {
+                        (self.elementsWithBoundEvents = self.elementsWithBoundEvents || []).push($el = $el.find(eventSelector));
+                        eventSelector = undefined;
+                    }
+
+                    $el[isOneEvent ? 'one' : 'on'](eventName, eventSelector, function() {
+                        (typeof handler === 'function' ? handler : self[handler]).apply(self, arguments);
+                    });
+
                 });
 
-            });
+            }
 
             return this;
 
@@ -11195,9 +11212,58 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     $.each(this.elementsWithBoundEvents, function(i, el) {
                         $(el).off(eventNamespace);
                     });
-                    this.elementsWithBoundEvents = null;
+                    delete this.elementsWithBoundEvents;
                 }
 
+                delete this.dismissListeners;
+
+            }
+
+            return this;
+
+        },
+
+        addDismissListener: function(listenerName, options) {
+
+            var self = this;
+
+            if (!listenerName) {
+                throw new Error('Dismiss listener name not speficied');
+            }
+
+            options = $.extend({$el: this.$el}, options);
+
+            this.$document = this.$document || $(document);
+            this.ens = this.ens || '.' + this.cid;
+            this.dismissListeners = this.dismissListeners || {};
+
+            if (!this.dismissListeners[listenerName]) {
+
+                this.dismissListeners[listenerName] = function(e) {
+
+                    if (e.keyCode === 27 || (!$(e.target).is(options.$el) && !$.contains(options.$el.get(0), e.target))) {
+                        self[listenerName].call(self);
+                    }
+
+                };
+
+                this.$document.on('click' + this.ens + ' keyup' + this.ens, this.dismissListeners[listenerName]);
+
+            }
+
+            return this;
+
+        },
+
+        removeDismissListener: function(listenerName) {
+
+            if (!listenerName) {
+                throw new Error('Name of dismiss listener to remove not specified');
+            }
+
+            if (this.dismissListeners && this.dismissListeners[listenerName]) {
+                this.$document.off('click keyup', this.dismissListeners[listenerName]);
+                delete this.dismissListeners[listenerName];
             }
 
             return this;
@@ -11351,9 +11417,9 @@ module.exports = View.extend({
 
     setupCodeHighlight: function() {
 
-        var Prism = __webpack_require__(9);
+        var Prism = __webpack_require__(8);
 
-        __webpack_require__(8);
+        __webpack_require__(7);
 
         Prism.plugins.NormalizeWhitespace.setDefaults({
             'remove-trailing': true,
@@ -11398,7 +11464,7 @@ module.exports = View.extend({
 
 var $ = __webpack_require__(0);
 var View = __webpack_require__(1);
-var shuffleArray = __webpack_require__(10);
+var shuffleArray = __webpack_require__(9);
 
 module.exports = View.extend({
 
@@ -11813,7 +11879,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
      'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
   while (prop = properties.pop()) if (!con[prop]) con[prop] = {};
-  while (method = methods.pop()) if (typeof con[method] !== 'function') con[method] = dummy;
+  while (method = methods.pop()) if (!con[method]) con[method] = dummy;
   // Using `this` for web workers & supports Browserify / Webpack.
 })(typeof window === 'undefined' ? this : window);
 
@@ -11995,87 +12061,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-    /* istanbul ignore next */
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        root.typeFactory = factory();
-    }
-
-}(this, function() {
-
-    function transferProperties(destination, source) {
-
-        for (var key in source) {
-            source.hasOwnProperty(key) && (destination[key] = source[key]);
-        }
-
-        return destination;
-
-    }
-
-    function factory(parentType, prototypeProperties, staticProperties) {
-
-        var generatedType = prototypeProperties.hasOwnProperty('constructor') ? prototypeProperties.constructor : function() {
-
-            if (parentType) {
-                parentType.apply(this, arguments);
-            } else {
-                this.initialize && this.initialize.apply(this, arguments);
-            }
-
-        };
-
-        if (parentType) {
-
-            var Surrogate = function() { this.constructor = generatedType; };
-            Surrogate.prototype = parentType.prototype;
-            generatedType.prototype = new Surrogate();
-
-            transferProperties(generatedType, parentType);
-        }
-
-        staticProperties && transferProperties(generatedType, staticProperties);
-        prototypeProperties && transferProperties(generatedType.prototype, prototypeProperties);
-
-        return generatedType;
-
-    }
-
-    return function(prototypeProperties, staticProperties) {
-
-        var createdType = factory(null, prototypeProperties, staticProperties);
-
-        createdType.extend = function(prototypeProperties, staticProperties) {
-
-            return factory(this, prototypeProperties, staticProperties);
-
-        };
-
-        return createdType;
-
-    };
-
-}));
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports) {
 
 (function() {
-
-if (typeof self === 'undefined' || !self.Prism || !self.document) {
-	return;
-}
 
 var assign = Object.assign || function (obj1, obj2) {
 	for (var name in obj2) {
@@ -12187,6 +12175,16 @@ NormalizeWhitespace.prototype = {
 	}
 };
 
+// Support node modules
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = NormalizeWhitespace;
+}
+
+// Exit if prism is not loaded
+if (typeof Prism === 'undefined') {
+	return;
+}
+
 Prism.plugins.NormalizeWhitespace = new NormalizeWhitespace({
 	'remove-trailing': true,
 	'remove-indent': true,
@@ -12200,18 +12198,30 @@ Prism.plugins.NormalizeWhitespace = new NormalizeWhitespace({
 });
 
 Prism.hooks.add('before-sanity-check', function (env) {
+	var Normalizer = Prism.plugins.NormalizeWhitespace;
+
+	// Check settings
+	if (env.settings && env.settings['whitespace-normalization'] === false) {
+		return;
+	}
+
+	// Simple mode if there is no env.element
+	if ((!env.element || !env.element.parentNode) && env.code) {
+		env.code = Normalizer.normalize(env.code, env.settings);
+		return;
+	}
+
+	// Normal mode
 	var pre = env.element.parentNode;
 	var clsReg = /\bno-whitespace-normalization\b/;
 	if (!env.code || !pre || pre.nodeName.toLowerCase() !== 'pre' ||
-			(env.settings && env.settings['whitespace-normalization'] === false) ||
 			clsReg.test(pre.className) || clsReg.test(env.element.className))
 		return;
 
 	var children = pre.childNodes,
 	    before = '',
 	    after = '',
-	    codeFound = false,
-	    Normalizer = Prism.plugins.NormalizeWhitespace;
+	    codeFound = false;
 
 	// Move surrounding whitespace from the <pre> tag into the <code> tag
 	for (var i = 0; i < children.length; ++i) {
@@ -12245,7 +12255,7 @@ Prism.hooks.add('before-sanity-check', function (env) {
 }());
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -12274,6 +12284,8 @@ var lang = /\blang(?:uage)?-(\w+)\b/i;
 var uniqueId = 0;
 
 var _ = _self.Prism = {
+	manual: _self.Prism && _self.Prism.manual,
+	disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
 	util: {
 		encode: function (tokens) {
 			if (tokens instanceof Token) {
@@ -12313,8 +12325,7 @@ var _ = _self.Prism = {
 					return clone;
 
 				case 'Array':
-					// Check for existence for IE8
-					return o.map && o.map(function(v) { return _.util.clone(v); });
+					return o.map(function(v) { return _.util.clone(v); });
 			}
 
 			return o;
@@ -12409,6 +12420,10 @@ var _ = _self.Prism = {
 	plugins: {},
 
 	highlightAll: function(async, callback) {
+		_.highlightAllUnder(document, async, callback);
+	},
+
+	highlightAllUnder: function(container, async, callback) {
 		var env = {
 			callback: callback,
 			selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
@@ -12416,7 +12431,7 @@ var _ = _self.Prism = {
 
 		_.hooks.run("before-highlightall", env);
 
-		var elements = env.elements || document.querySelectorAll(env.selector);
+		var elements = env.elements || container.querySelectorAll(env.selector);
 
 		for (var i=0, element; element = elements[i++];) {
 			_.highlightElement(element, async === true, env.callback);
@@ -12439,11 +12454,13 @@ var _ = _self.Prism = {
 		// Set language on the element, if not present
 		element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
 
-		// Set language on the parent, for styling
-		parent = element.parentNode;
+		if (element.parentNode) {
+			// Set language on the parent, for styling
+			parent = element.parentNode;
 
-		if (/pre/i.test(parent.nodeName)) {
-			parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+			if (/pre/i.test(parent.nodeName)) {
+				parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+			}
 		}
 
 		var code = element.textContent;
@@ -12459,7 +12476,9 @@ var _ = _self.Prism = {
 
 		if (!env.code || !env.grammar) {
 			if (env.code) {
+				_.hooks.run('before-highlight', env);
 				env.element.textContent = env.code;
+				_.hooks.run('after-highlight', env);
 			}
 			_.hooks.run('complete', env);
 			return;
@@ -12507,24 +12526,16 @@ var _ = _self.Prism = {
 		return Token.stringify(_.util.encode(tokens), language);
 	},
 
-	tokenize: function(text, grammar, language) {
+	matchGrammar: function (text, strarr, grammar, index, startPos, oneshot, target) {
 		var Token = _.Token;
 
-		var strarr = [text];
-
-		var rest = grammar.rest;
-
-		if (rest) {
-			for (var token in rest) {
-				grammar[token] = rest[token];
-			}
-
-			delete grammar.rest;
-		}
-
-		tokenloop: for (var token in grammar) {
+		for (var token in grammar) {
 			if(!grammar.hasOwnProperty(token) || !grammar[token]) {
 				continue;
+			}
+
+			if (token == target) {
+				return;
 			}
 
 			var patterns = grammar[token];
@@ -12547,13 +12558,13 @@ var _ = _self.Prism = {
 				pattern = pattern.pattern || pattern;
 
 				// Don’t cache length as it changes during the loop
-				for (var i=0, pos = 0; i<strarr.length; pos += strarr[i].length, ++i) {
+				for (var i = index, pos = startPos; i < strarr.length; pos += strarr[i].length, ++i) {
 
 					var str = strarr[i];
 
 					if (strarr.length > text.length) {
 						// Something went terribly wrong, ABORT, ABORT!
-						break tokenloop;
+						return;
 					}
 
 					if (str instanceof Token) {
@@ -12578,7 +12589,7 @@ var _ = _self.Prism = {
 						    k = i,
 						    p = pos;
 
-						for (var len = strarr.length; k < len && p < to; ++k) {
+						for (var len = strarr.length; k < len && (p < to || (!strarr[k].type && !strarr[k - 1].greedy)); ++k) {
 							p += strarr[k].length;
 							// Move the index i to the element in strarr that is closest to from
 							if (from >= p) {
@@ -12602,6 +12613,10 @@ var _ = _self.Prism = {
 					}
 
 					if (!match) {
+						if (oneshot) {
+							break;
+						}
+
 						continue;
 					}
 
@@ -12618,6 +12633,8 @@ var _ = _self.Prism = {
 					var args = [i, delNum];
 
 					if (before) {
+						++i;
+						pos += before.length;
 						args.push(before);
 					}
 
@@ -12630,9 +12647,31 @@ var _ = _self.Prism = {
 					}
 
 					Array.prototype.splice.apply(strarr, args);
+
+					if (delNum != 1)
+						_.matchGrammar(text, strarr, grammar, i, pos, true, token);
+
+					if (oneshot)
+						break;
 				}
 			}
 		}
+	},
+
+	tokenize: function(text, grammar, language) {
+		var strarr = [text];
+
+		var rest = grammar.rest;
+
+		if (rest) {
+			for (var token in rest) {
+				grammar[token] = rest[token];
+			}
+
+			delete grammar.rest;
+		}
+
+		_.matchGrammar(text, strarr, grammar, 0, 0, false);
 
 		return strarr;
 	},
@@ -12692,10 +12731,6 @@ Token.stringify = function(o, language, parent) {
 		parent: parent
 	};
 
-	if (env.type == 'comment') {
-		env.attributes['spellcheck'] = 'true';
-	}
-
 	if (o.alias) {
 		var aliases = _.util.type(o.alias) === 'Array' ? o.alias : [o.alias];
 		Array.prototype.push.apply(env.classes, aliases);
@@ -12716,18 +12751,21 @@ if (!_self.document) {
 		// in Node.js
 		return _self.Prism;
 	}
- 	// In worker
-	_self.addEventListener('message', function(evt) {
-		var message = JSON.parse(evt.data),
-		    lang = message.language,
-		    code = message.code,
-		    immediateClose = message.immediateClose;
 
-		_self.postMessage(_.highlight(code, _.languages[lang], lang));
-		if (immediateClose) {
-			_self.close();
-		}
-	}, false);
+	if (!_.disableWorkerMessageHandler) {
+		// In worker
+		_self.addEventListener('message', function (evt) {
+			var message = JSON.parse(evt.data),
+				lang = message.language,
+				code = message.code,
+				immediateClose = message.immediateClose;
+
+			_self.postMessage(_.highlight(code, _.languages[lang], lang));
+			if (immediateClose) {
+				_self.close();
+			}
+		}, false);
+	}
 
 	return _self.Prism;
 }
@@ -12738,7 +12776,7 @@ var script = document.currentScript || [].slice.call(document.getElementsByTagNa
 if (script) {
 	_.filename = script.src;
 
-	if (document.addEventListener && !script.hasAttribute('data-manual')) {
+	if (!_.manual && !script.hasAttribute('data-manual')) {
 		if(document.readyState !== "loading") {
 			if (window.requestAnimationFrame) {
 				window.requestAnimationFrame(_.highlightAll);
@@ -12771,12 +12809,12 @@ if (typeof global !== 'undefined') {
 ********************************************** */
 
 Prism.languages.markup = {
-	'comment': /<!--[\w\W]*?-->/,
-	'prolog': /<\?[\w\W]+?\?>/,
-	'doctype': /<!DOCTYPE[\w\W]+?>/i,
-	'cdata': /<!\[CDATA\[[\w\W]*?]]>/i,
+	'comment': /<!--[\s\S]*?-->/,
+	'prolog': /<\?[\s\S]+?\?>/,
+	'doctype': /<!DOCTYPE[\s\S]+?>/i,
+	'cdata': /<!\[CDATA\[[\s\S]*?]]>/i,
 	'tag': {
-		pattern: /<\/?(?!\d)[^\s>\/=$<]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\\1|\\?(?!\1)[\w\W])*\1|[^\s'">=]+))?)*\s*\/?>/i,
+		pattern: /<\/?(?!\d)[^\s>\/=$<]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+))?)*\s*\/?>/i,
 		inside: {
 			'tag': {
 				pattern: /^<\/?[^\s>\/]+/i,
@@ -12786,9 +12824,15 @@ Prism.languages.markup = {
 				}
 			},
 			'attr-value': {
-				pattern: /=(?:('|")[\w\W]*?(\1)|[^\s>]+)/i,
+				pattern: /=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+)/i,
 				inside: {
-					'punctuation': /[=>"']/
+					'punctuation': [
+						/^=/,
+						{
+							pattern: /(^|[^\\])["']/,
+							lookbehind: true
+						}
+					]
 				}
 			},
 			'punctuation': /\/?>/,
@@ -12803,6 +12847,9 @@ Prism.languages.markup = {
 	},
 	'entity': /&#?[\da-z]{1,8};/i
 };
+
+Prism.languages.markup['tag'].inside['attr-value'].inside['entity'] =
+	Prism.languages.markup['entity'];
 
 // Plugin to make entity title show the real entity, idea by Roman Komarov
 Prism.hooks.add('wrap', function(env) {
@@ -12823,21 +12870,21 @@ Prism.languages.svg = Prism.languages.markup;
 ********************************************** */
 
 Prism.languages.css = {
-	'comment': /\/\*[\w\W]*?\*\//,
+	'comment': /\/\*[\s\S]*?\*\//,
 	'atrule': {
-		pattern: /@[\w-]+?.*?(;|(?=\s*\{))/i,
+		pattern: /@[\w-]+?.*?(?:;|(?=\s*\{))/i,
 		inside: {
 			'rule': /@[\w-]+/
 			// See rest below
 		}
 	},
-	'url': /url\((?:(["'])(\\(?:\r\n|[\w\W])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
-	'selector': /[^\{\}\s][^\{\};]*?(?=\s*\{)/,
+	'url': /url\((?:(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
+	'selector': /[^{}\s][^{};]*?(?=\s*\{)/,
 	'string': {
-		pattern: /("|')(\\(?:\r\n|[\w\W])|(?!\1)[^\\\r\n])*\1/,
+		pattern: /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 		greedy: true
 	},
-	'property': /(\b|\B)[\w-]+(?=\s*:)/i,
+	'property': /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
 	'important': /\B!important\b/i,
 	'function': /[-a-z0-9]+(?=\()/i,
 	'punctuation': /[(){};:]/
@@ -12848,16 +12895,17 @@ Prism.languages.css['atrule'].inside.rest = Prism.util.clone(Prism.languages.css
 if (Prism.languages.markup) {
 	Prism.languages.insertBefore('markup', 'tag', {
 		'style': {
-			pattern: /(<style[\w\W]*?>)[\w\W]*?(?=<\/style>)/i,
+			pattern: /(<style[\s\S]*?>)[\s\S]*?(?=<\/style>)/i,
 			lookbehind: true,
 			inside: Prism.languages.css,
-			alias: 'language-css'
+			alias: 'language-css',
+			greedy: true
 		}
 	});
-	
+
 	Prism.languages.insertBefore('inside', 'attr-value', {
 		'style-attr': {
-			pattern: /\s*style=("|').*?\1/i,
+			pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
 			inside: {
 				'attr-name': {
 					pattern: /^\s*style/i,
@@ -12881,7 +12929,7 @@ if (Prism.languages.markup) {
 Prism.languages.clike = {
 	'comment': [
 		{
-			pattern: /(^|[^\\])\/\*[\w\W]*?\*\//,
+			pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
 			lookbehind: true
 		},
 		{
@@ -12890,18 +12938,18 @@ Prism.languages.clike = {
 		}
 	],
 	'string': {
-		pattern: /(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+		pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 		greedy: true
 	},
 	'class-name': {
-		pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,
+		pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[\w.\\]+/i,
 		lookbehind: true,
 		inside: {
-			punctuation: /(\.|\\)/
+			punctuation: /[.\\]/
 		}
 	},
-	'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
-	'boolean': /\b(true|false)\b/,
+	'keyword': /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
+	'boolean': /\b(?:true|false)\b/,
 	'function': /[a-z0-9_]+(?=\()/i,
 	'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)\b/i,
 	'operator': /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
@@ -12914,24 +12962,29 @@ Prism.languages.clike = {
 ********************************************** */
 
 Prism.languages.javascript = Prism.languages.extend('clike', {
-	'keyword': /\b(as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
-	'number': /\b-?(0x[\dA-Fa-f]+|0b[01]+|0o[0-7]+|\d*\.?\d+([Ee][+-]?\d+)?|NaN|Infinity)\b/,
+	'keyword': /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
+	'number': /\b-?(?:0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|\d*\.?\d+(?:[Ee][+-]?\d+)?|NaN|Infinity)\b/,
 	// Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
-	'function': /[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(?=\()/i,
-	'operator': /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*\*?|\/|~|\^|%|\.{3}/
+	'function': /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*\()/i,
+	'operator': /-[-=]?|\+[+=]?|!=?=?|<<?=?|>>?>?=?|=(?:==?|>)?|&[&=]?|\|[|=]?|\*\*?=?|\/=?|~|\^=?|%=?|\?|\.{3}/
 });
 
 Prism.languages.insertBefore('javascript', 'keyword', {
 	'regex': {
-		pattern: /(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\\\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})]))/,
+		pattern: /(^|[^/])\/(?!\/)(\[[^\]\r\n]+]|\\.|[^/\\\[\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})]))/,
 		lookbehind: true,
 		greedy: true
+	},
+	// This must be declared before keyword because we use "function" inside the look-forward
+	'function-variable': {
+		pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
+		alias: 'function'
 	}
 });
 
 Prism.languages.insertBefore('javascript', 'string', {
 	'template-string': {
-		pattern: /`(?:\\\\|\\?[^\\])*?`/,
+		pattern: /`(?:\\[\s\S]|[^\\`])*`/,
 		greedy: true,
 		inside: {
 			'interpolation': {
@@ -12952,15 +13005,17 @@ Prism.languages.insertBefore('javascript', 'string', {
 if (Prism.languages.markup) {
 	Prism.languages.insertBefore('markup', 'tag', {
 		'script': {
-			pattern: /(<script[\w\W]*?>)[\w\W]*?(?=<\/script>)/i,
+			pattern: /(<script[\s\S]*?>)[\s\S]*?(?=<\/script>)/i,
 			lookbehind: true,
 			inside: Prism.languages.javascript,
-			alias: 'language-javascript'
+			alias: 'language-javascript',
+			greedy: true
 		}
 	});
 }
 
 Prism.languages.js = Prism.languages.javascript;
+
 
 /* **********************************************
      Begin prism-file-highlight.js
@@ -12985,58 +13040,56 @@ Prism.languages.js = Prism.languages.javascript;
 			'tex': 'latex'
 		};
 
-		if(Array.prototype.forEach) { // Check to prevent error in IE8
-			Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-				var src = pre.getAttribute('data-src');
+		Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+			var src = pre.getAttribute('data-src');
 
-				var language, parent = pre;
-				var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
-				while (parent && !lang.test(parent.className)) {
-					parent = parent.parentNode;
-				}
+			var language, parent = pre;
+			var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
+			while (parent && !lang.test(parent.className)) {
+				parent = parent.parentNode;
+			}
 
-				if (parent) {
-					language = (pre.className.match(lang) || [, ''])[1];
-				}
+			if (parent) {
+				language = (pre.className.match(lang) || [, ''])[1];
+			}
 
-				if (!language) {
-					var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-					language = Extensions[extension] || extension;
-				}
+			if (!language) {
+				var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+				language = Extensions[extension] || extension;
+			}
 
-				var code = document.createElement('code');
-				code.className = 'language-' + language;
+			var code = document.createElement('code');
+			code.className = 'language-' + language;
 
-				pre.textContent = '';
+			pre.textContent = '';
 
-				code.textContent = 'Loading…';
+			code.textContent = 'Loading…';
 
-				pre.appendChild(code);
+			pre.appendChild(code);
 
-				var xhr = new XMLHttpRequest();
+			var xhr = new XMLHttpRequest();
 
-				xhr.open('GET', src, true);
+			xhr.open('GET', src, true);
 
-				xhr.onreadystatechange = function () {
-					if (xhr.readyState == 4) {
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4) {
 
-						if (xhr.status < 400 && xhr.responseText) {
-							code.textContent = xhr.responseText;
+					if (xhr.status < 400 && xhr.responseText) {
+						code.textContent = xhr.responseText;
 
-							Prism.highlightElement(code);
-						}
-						else if (xhr.status >= 400) {
-							code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-						}
-						else {
-							code.textContent = '✖ Error: File does not exist or is empty';
-						}
+						Prism.highlightElement(code);
 					}
-				};
+					else if (xhr.status >= 400) {
+						code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+					}
+					else {
+						code.textContent = '✖ Error: File does not exist or is empty';
+					}
+				}
+			};
 
-				xhr.send(null);
-			});
-		}
+			xhr.send(null);
+		});
 
 	};
 
@@ -13047,7 +13100,7 @@ Prism.languages.js = Prism.languages.javascript;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13133,6 +13186,159 @@ shuffle.pick = function(arr, options) {
  * Expose
  */
 module.exports = shuffle;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
+    /* istanbul ignore next */
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.typeFactory = factory();
+    }
+
+}(this, function() {
+
+    function each(obj, callback) {
+
+        for (var key in obj) {
+            obj.hasOwnProperty(key) && callback(obj[key], key);
+        }
+
+    }
+
+    function transferProperties(out) {
+
+        for (var i = 1; i < arguments.length; i++) {
+
+            each(arguments[i], function(value, key) {
+                typeof value !== 'undefined' && (out[key] = value);
+            });
+
+        }
+
+        return out;
+
+    }
+
+    var optionsApi = {
+
+        writeOptions: function(options) {
+
+            var defaults = typeof this.defaults === 'function' ? this.defaults() : this.defaults;
+            var ruleDefaults = {};
+
+            this.optionRules && each(this.optionRules, function(data, optionName) {
+                ruleDefaults[optionName] = data.default;
+            });
+
+            this.options = transferProperties({}, defaults, ruleDefaults, options);
+
+        },
+
+        validateOptions: function(options, rules) {
+
+            var errors = [];
+
+            each(rules, function(data, optionName) {
+
+                var optionValue = options[optionName];
+                var optionValueType = typeof optionValue;
+
+                if (data.required !== false || optionValueType !== 'undefined') {
+
+                    if (data.type && optionValueType !== data.type) {
+                        errors.push('Option "' + optionName +'" is ' + optionValueType + ', expected ' + data.type + '.');
+                    }
+
+                    if (data.rule && !data.rule(optionValue)) {
+                        errors.push('Option "' + optionName +'" breaks defined rule.');
+                    }
+
+                    if (data.instanceOf && !(optionValue instanceof data.instanceOf)) {
+                        errors.push('Option "' + optionName +'" is not instance of defined constructor.');
+                    }
+
+                }
+
+            });
+
+            if (errors.length) {
+                throw new Error(errors.join(' '));
+            } else {
+                return this;
+            }
+
+        }
+
+    };
+
+    function factory(parentType, prototypeProperties, staticProperties) {
+
+        prototypeProperties = prototypeProperties || {};
+
+        var generatedType = prototypeProperties.hasOwnProperty('constructor') ? prototypeProperties.constructor : function() {
+
+            if (parentType) {
+
+                parentType.apply(this, arguments);
+
+            } else {
+
+                if (this.assignOptions) {
+                    this.writeOptions.apply(this, arguments);
+                    this.optionRules && this.validateOptions(this.options, this.optionRules);
+                }
+                this.initialize && this.initialize.apply(this, arguments);
+
+            }
+
+        };
+
+        if (parentType) {
+
+            var Surrogate = function() { this.constructor = generatedType; };
+            Surrogate.prototype = parentType.prototype;
+            generatedType.prototype = new Surrogate();
+
+            transferProperties(generatedType, parentType);
+
+        } else {
+
+            transferProperties(prototypeProperties, optionsApi);
+
+        }
+
+        staticProperties && transferProperties(generatedType, staticProperties);
+        transferProperties(generatedType.prototype, prototypeProperties);
+
+        return generatedType;
+
+    }
+
+    return function(prototypeProperties, staticProperties) {
+
+        var createdType = factory(null, prototypeProperties, staticProperties);
+
+        createdType.extend = function(prototypeProperties, staticProperties) {
+
+            return factory(this, prototypeProperties, staticProperties);
+
+        };
+
+        return createdType;
+
+    };
+
+}));
 
 
 /***/ }),

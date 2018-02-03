@@ -234,9 +234,7 @@ AttireNavigation = View.extend({
     open: function() {
 
         if (!this.$closeBtn) {
-            this.$closeBtn =
-                $('<button class="closeBtn nBtn iconCross" type="button">Close navigation</button>')
-                .appendTo(this.$el);
+            this.$closeBtn = $('<button class="closeBtn nBtn iconCross" type="button">Close navigation</button>').appendTo(this.$el);
         }
 
         $('body').addClass('navOpened');
