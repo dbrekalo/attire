@@ -2,7 +2,7 @@ var $ = require('jquery');
 var View = require('jquery-simple-view');
 var BaseController = require('../common/baseController');
 var AttireUserRepositories = require('../common/userRepositories');
-var slug = require('slug');
+var slugify = require('slugify');
 
 var AttireController;
 var AttireNavigation;
@@ -57,7 +57,7 @@ AttireNavigation = View.extend({
             if ($title.length) {
 
                 var title = $title.data('nav-title') || $title.text();
-                var titleSlug = slug(title, {lower: true});
+                var titleSlug = slugify(title);
 
                 $('<li><a href="#section-' + titleSlug + '">' + title + '</a></li>').appendTo($navList);
                 $attireBlock.attr('id', 'section-' + titleSlug);

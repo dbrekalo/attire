@@ -6,7 +6,7 @@ var path = require('path');
 var marked = require('marked');
 var slugcase = require('to-case').slug;
 var nunjucks = require('nunjucks');
-var jsdom = require('jsdom');
+var jsdom = require('jsdom/lib/old-api.js');
 var minify = require('html-minifier').minify;
 
 function buildPageData(options) {

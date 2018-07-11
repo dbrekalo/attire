@@ -20,6 +20,7 @@ module.exports = function(grunt) {
                 },
                 options: {
                     outputStyle: isDevEnvironment ? 'expanded' : 'compressed',
+                    implementation: require('node-sass'),
                     sourceMap: false,
                     precision: 5,
                     includePaths: ['node_modules']
